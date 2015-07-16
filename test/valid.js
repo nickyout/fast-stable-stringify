@@ -16,13 +16,11 @@ var fixtures = [
 	require('../fixtures/final-boss-undefined')
 ];
 
-console.log("Unit test");
-module.exports = {
-	"equal to substack's": function() {
-		var i = 0,
-			key;
+suite("Unit test", function( ){
+	test("equal to substack's", function() {
+		var i = 0;
 		for (i = 0; i < fixtures.length; i++) {
-			forEachRecursive(fixtures, function(val) {
+			forEachRecursive(fixtures, function (val) {
 				var mine = myStringify(val),
 					substack = substackStringify(val);
 				if (mine !== substack) {
@@ -32,5 +30,5 @@ module.exports = {
 				assert.equal(mine, substack);
 			});
 		}
-	}
-};
+	});
+});
