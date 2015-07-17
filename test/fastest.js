@@ -2,9 +2,9 @@
 var Benchmark = require('benchmark'),
 	logger = new(require('devnull'))({ timestamp: false, namespacing: 0 });
 
-var myStringify = require('../'),
+var myStringify = require('../index'),
 	substackStringify = require('json-stable-stringify'),
-	data = require("../fixtures").input;
+	data = require("../fixtures/index").input;
 
 var result;
 
