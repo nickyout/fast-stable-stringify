@@ -7,26 +7,30 @@ var myStringify = require('../index'),
 	data = require("../fixtures/index").input;
 
 // Paranoia, hopefully v8 will not perform some function loops away
-var result;
+var result = 0,
+	fastest;
 
 suite("Benchmark", function() {
-	this.timeout(30000);
-	test("fastest", function(done) {
-		(new Benchmark.Suite())
+	setup(function(done) {
+		this.timeout(30000);
+		(new Benchmark.Suite("benchmark", { minSamples: 90 }))
 			.add('nickyout/fast-stable-stringify', function() {
-				result = myStringify(data);
+				result += myStringify(data).length;
 			})
 			.add('substack/json-stable-stringify', function() {
-				result = substackStringify(data);
+				result += substackStringify(data).length;
 			})
 			.on('cycle', function cycle(e) {
-				console.log('Finished benchmarking: '+ e.target);
+				console.log('Finished benchmarking: '+ e.target + ' (cumulative string length: ' + result + ")");
+				result = 0;
 			})
 			.on('complete', function completed() {
-				var fastest = this.filter('fastest').pluck('name');
-				assert.equal(fastest, 'nickyout/fast-stable-stringify');
+				fastest = this.filter('fastest').pluck('name')[0];
 				done();
 			})
-			.run();
+			.run({ async: true });
 	});
+	test("fastest", function() {
+		assert.equal(fastest, 'nickyout/fast-stable-stringify');
+	})
 });
