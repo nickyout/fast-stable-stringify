@@ -1,34 +1,26 @@
-var substackStringify = require('json-stable-stringify'),
-	myStringify = require('../index');
-	assert = require('assert');
+var myStringify = require('../index'),
+	assert = require('assert'),
+	eachRecursive = require('../util/eachRecursive');
 
-function forEachRecursive(obj, fn) {
-	for (var name in obj) {
-		if (typeof obj === "object" && obj !== null) {
-			forEachRecursive(obj[name], fn);
-		}
-		fn(obj[name]);
-	}
-}
-
-var fixtures = [
-	require('../fixtures/final-boss.json'),
-	require('../fixtures/final-boss-undefined')
-];
+var fixtures = require('../fixtures'),
+	input = fixtures.input,
+	expected = fixtures.expected,
+	numComparisons = 0;
 
 suite("Unit test", function( ){
-	test("equal to substack's", function() {
-		var i = 0;
-		for (i = 0; i < fixtures.length; i++) {
-			forEachRecursive(fixtures, function (val) {
-				var mine = myStringify(val),
-					substack = substackStringify(val);
-				if (mine !== substack) {
-					console.log("Not equal:", val);
-					console.log("Mine:", myStringify(val));
-				}
-				assert.equal(mine, substack);
-			});
-		}
+	test("Recursively equal to expected", function() {
+		eachRecursive(input, function (val, path) {
+			var mine = myStringify(val),
+				expectedVal = expected[path];
+			if (mine !== expectedVal) {
+				console.log("[Not equal] path:", path, "value:", val, "mine:", mine);
+			}
+			assert.equal(mine, expectedVal);
+			numComparisons++;
+		});
+		//console.log(numComparisons + " comparisons made");
 	});
+	test("Expected number of comparisons run (595)", function() {
+		assert.equal(numComparisons, 595);
+	})
 });

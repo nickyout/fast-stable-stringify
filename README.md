@@ -1,7 +1,11 @@
 ## fast-stable-stringify
 WIP. The goal is fast hashing of non-indented stringification. Currently no support for replacer or spaces. 
 
-Warning: Tested only in node.js. 
+Validity test only:
+
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/nickyout_fast-stable.svg)](https://saucelabs.com/u/nickyout_fast-stable)
+
+IE appears to be failing on UTF-8 characters.
 
 ```
 Unit test

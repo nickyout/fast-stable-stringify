@@ -4,10 +4,7 @@ var Benchmark = require('benchmark'),
 
 var myStringify = require('../'),
 	substackStringify = require('json-stable-stringify'),
-	data = [
-		require('../fixtures/final-boss.json'),
-		require('../fixtures/final-boss-undefined')
-	];
+	data = require("../fixtures").input;
 
 var result;
 
