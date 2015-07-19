@@ -13,20 +13,23 @@ var result = 0,
 suite("Benchmark", function() {
 	setup(function(done) {
 		this.timeout(30000);
-		(new Benchmark.Suite("benchmark", { minSamples: 90 }))
+		(new Benchmark
+			.Suite('fastest', {
+				onCycle: function cycle(e) {
+					console.log('Finished benchmarking: '+ e.target + ' (cumulative string length: ' + result + ")");
+					result = 0;
+				},
+				onComplete: function completed() {
+					fastest = this.filter('fastest').pluck('name')[0];
+					console.log(this.filter('fastest'));
+					done();
+				}
+			}))
 			.add('nickyout/fast-stable-stringify', function() {
 				result += myStringify(data).length;
 			})
 			.add('substack/json-stable-stringify', function() {
 				result += substackStringify(data).length;
-			})
-			.on('cycle', function cycle(e) {
-				console.log('Finished benchmarking: '+ e.target + ' (cumulative string length: ' + result + ")");
-				result = 0;
-			})
-			.on('complete', function completed() {
-				fastest = this.filter('fastest').pluck('name')[0];
-				done();
 			})
 			.run({ async: true });
 	});
