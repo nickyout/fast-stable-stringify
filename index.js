@@ -37,7 +37,7 @@ module.exports = function simpleStableStringify(val) {
 	}
 };
 
-module.exports.stringRegExp = strReg;
+module.exports.stringSearch = strReg;
 module.exports.stringReplace = strReplace;
 
 function sss(val) {
