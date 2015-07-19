@@ -4,20 +4,20 @@
 
 (Builds not numbered yet, but click the badge to see test results)
 
-The most popular repository providing this feature is [substack's json-stable-stringify][0]. The intent if this library is to provide a faster alternative for when performance is more important than features. It assumes you provide basic javascript values without circular references, and returns a non-indented string.  
+The most popular repository providing this feature is [substack's json-stable-stringify][sub]. The intent if this library is to provide a faster alternative for when performance is more important than features. It assumes you provide basic javascript values without circular references, and returns a non-indented string.  
 
 Usage:
 
 ```javascript
 var stringify = require('fast-stable-stringify');
-var result = stringify({ d: 0, c: 1, a: 2, b: 3, e: 4 });
-console.log('{"a":2,"b":3,"c":1,"d":0,"e":4}');
+stringify({ d: 0, c: 1, a: 2, b: 3, e: 4 }); // '{"a":2,"b":3,"c":1,"d":0,"e":4}'
 ```
 
 Just like substack's, it does:
 
 *   handle all variations of all basic javascript values (number, string, boolean, array, object, null)
 *   handle undefined in the same way as JSON.stringify
+*	work without native JSON.strinxgify
 *   not support ie8 (and below) with complete certainty. At least, his build failed on ie8.	
 
 Unlike substack's, it does:
@@ -27,7 +27,9 @@ Unlike substack's, it does:
 *   not check for .toJSON() methods on objects
 
 ## Test results
-Tested validity (answer equal to substack's) and benchmark (faster than substack's). A test passes only if it has the same output as substack's but is faster (as concluded by [benchmark.js][1]).
+Tested validity (answer equal to substack's) and benchmark (faster than substack's). A test passes only if it has the same output as substack's but is faster (as concluded by [benchmark.js][ben]). 
+
+To (hopefully) prevent [certain smart browsers][cat] from concluding the stringification is not necessary because it is never used anywhere, I summed up all the lengths of the resulting strings of each benchmark contestant and printed it along with the result data. 
 
 Benchmark commit 8fdab80    |substack/json-stable-stringify |nickyout/fast-stable-stringify |faster*
 ----------------------------|-------------------------------|-------------------------------|------
@@ -51,10 +53,50 @@ android 5.1 on Linux        |3,576 ops/sec ±2.46% (83 runs) |5,010 ops/sec ±7.
 
 \* I did (nickyout / substack) - 1 in percentages
 
-Looks like it's generally faster. 
+Looks like it's generally faster. I would say about 50% in practice since chrome-ff-ie take the brunt of the used browsers (or see [caniuse browser usage][usg]). 
 
-See results.txt for the original output.
+See `./results.txt` for the original output.
 
+## Also
+It exposes the way strings are escaped for JSON:
 
-[0]: https://github.com/substack/json-stable-stringify
-[1]: https://github.com/bestiejs/benchmark.js
+```javascript
+var stringify = require('./'),
+	stringSearch = stringify.stringSearch,
+	stringReplace = stringify.stringReplace,
+	str = "ay\nb0ss";
+str.replace(stringSearch, stringReplace); // 'ay\\nb0ss'
+```
+
+It does NOT add the quotes before and after the string needed for JSON.stringify-ing strings. Fortunately, that isn't hard:
+
+```javascript
+'"' + str.replace(stringSearch, stringReplace) + '"'; // '"ay\\nb0ss"'
+```
+
+## Running tests
+For testing in node, do:
+
+```
+npm test
+```
+
+I used [zuul][zul] for testing on saucelabs. It's a very easy to use tool, but because their library is about 150MB I did not include it in the devDepencencies. I suggest installing it globally if you want to test:
+
+```
+# install zuul
+npm install -g zuul
+# then, to run all tests
+zuul -- test/index.js
+ ```
+ 
+## TODO
+
+*	Travis
+*	Coverage
+
+[sub]: https://github.com/substack/json-stable-stringify
+[ben]: https://github.com/bestiejs/benchmark.js
+[cat]: http://mrale.ph/blog/2014/02/23/the-black-cat-of-microbenchmarks.html
+[usg]: http://caniuse.com/usage-table
+[zul]: https://github.com/defunctzombie/zuul
