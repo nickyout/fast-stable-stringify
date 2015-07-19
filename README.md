@@ -1,22 +1,33 @@
-## fast-stable-stringify
-The goal is fast non-indented stringification. Currently no support for replacer or spaces.
+# fast-stable-stringify
 
-The most popular repository providing this feature is [substack's json-stable-stringify][0]. 
+[![Sauce Test Status](https://saucelabs.com/browser-matrix/nickyout_fast-stable.svg)](https://saucelabs.com/u/nickyout_fast-stable)
+
+(Builds not numbered yet, but click the badge to see test results)
+
+The most popular repository providing this feature is [substack's json-stable-stringify][0]. The intent if this library is to provide a faster alternative for when performance is more important than features. It assumes you provide basic javascript values without circular references, and returns a non-indented string.  
 
 Usage:
 
 ```javascript
 var stringify = require('fast-stable-stringify');
-var result = stringify(obj);
+var result = stringify({ d: 0, c: 1, a: 2, b: 3, e: 4 });
+console.log('{"a":2,"b":3,"c":1,"d":0,"e":4}');
 ```
 
-Validity (answer equal to substack's) and benchmark (faster than substack's) test:
+Just like substack's, it does:
 
-[![Sauce Test Status](https://saucelabs.com/browser-matrix/nickyout_fast-stable.svg)](https://saucelabs.com/u/nickyout_fast-stable)
+*   handle all variations of all basic javascript values (number, string, boolean, array, object, null)
+*   handle undefined in the same way as JSON.stringify
+*   not support ie8 (and below) with complete certainty. At least, his build failed on ie8.	
 
-(Builds not numbered yet, click badge to see test results)
+Unlike substack's, it does:
 
-See results.txt for the original output:
+*   not implement the 'replacer' or 'space' arguments of the JSON.stringify method
+*   not check for circular references
+*   not check for .toJSON() methods on objects
+
+## Test results
+Tested validity (answer equal to substack's) and benchmark (faster than substack's). A test passes only if it has the same output as substack's but is faster (as concluded by [benchmark.js][1]).
 
 Benchmark commit 8fdab80    |substack/json-stable-stringify |nickyout/fast-stable-stringify |faster*
 ----------------------------|-------------------------------|-------------------------------|------
@@ -38,9 +49,12 @@ iphone 8.2 on Mac 10.10     |3,899 ops/sec ±4.80% (44 runs) |10,100 ops/sec ±6
 android 4.0 on Linux        |4,528 ops/sec ±0.78% (28 runs) |4,418 ops/sec ±2.66% (60 runs) |-2%
 android 5.1 on Linux        |3,576 ops/sec ±2.46% (83 runs) |5,010 ops/sec ±7.22% (84 runs) |+40%
 
-\* I did (nickyout / substack) - 1
+\* I did (nickyout / substack) - 1 in percentages
 
 Looks like it's generally faster. 
 
+See results.txt for the original output.
+
 
 [0]: https://github.com/substack/json-stable-stringify
+[1]: https://github.com/bestiejs/benchmark.js
