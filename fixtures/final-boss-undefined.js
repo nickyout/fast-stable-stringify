@@ -1,6 +1,11 @@
 module.exports = {
 	"object": {
-		"undefined": undefined
+		"undefined": undefined,
+		"undefineds": {
+			"ONE": undefined,
+			"TWO": undefined,
+			"THREE": undefined
+		}
 	},
 	"array": [
 		undefined

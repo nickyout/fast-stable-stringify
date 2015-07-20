@@ -21,7 +21,6 @@ suite("Benchmark", function() {
 				},
 				onComplete: function completed() {
 					fastest = this.filter('fastest').pluck('name')[0];
-					console.log(this.filter('fastest'));
 					done();
 				}
 			}))

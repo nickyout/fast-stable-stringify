@@ -20,7 +20,7 @@ suite("Unit test", function(){
 		});
 		//console.log(numComparisons + " comparisons made");
 	});
-	test("Expected number of comparisons run (595)", function() {
-		assert.equal(numComparisons, 595);
+	test("Expected number of comparisons run (599)", function() {
+		assert.equal(numComparisons, 599);
 	})
 });
