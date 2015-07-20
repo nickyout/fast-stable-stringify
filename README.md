@@ -2,7 +2,7 @@
 
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/nickyout_fast-stable.svg)](https://saucelabs.com/u/nickyout_fast-stable)
 
-(Builds not numbered yet, but click the badge to see test results)
+_Android 4.0 is marked failing because it is slower than substack's, not because it does not work. Click on the badge to inspect the test details._
 
 The most popular repository providing this feature is [substack's json-stable-stringify][sub]. The intent if this library is to provide a faster alternative for when performance is more important than features. It assumes you provide basic javascript values without circular references, and returns a non-indented string.  
 

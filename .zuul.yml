@@ -1,7 +1,7 @@
 ui: mocha-tdd
 browsers:
   - name: internet explorer
-    version: 9..latest
+    version: 8..latest
   - name: chrome
     version: [26, latest]
   - name: firefox
