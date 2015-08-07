@@ -22,7 +22,12 @@ var toString = {}.toString,
 			case 13: return "\\r";
 			case 9: return "\\t";
 			case 8: return "\\b";
-			default: return "\\u00" + (code > 15 ? "" : "0") + code.toString(16);
+			default:
+				if (code > 15) {
+					return "\\u00" + code.toString(16);
+				} else {
+					return "\\u000" + code.toString(16);
+				}
 		}
 	};
 
