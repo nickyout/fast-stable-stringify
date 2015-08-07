@@ -46,7 +46,7 @@ module.exports.stringSearch = strReg;
 module.exports.stringReplace = strReplace;
 
 function sss(val) {
-	var i, max, str, keys, pass;
+	var i, max, str, keys, key, pass;
 	switch (typeof val) {
 		case "object":
 			if (val === null) {
@@ -66,16 +66,19 @@ function sss(val) {
 				keys = objKeys(val).sort();
 				max = keys.length;
 				str = "{";
-				pass = max > 0 && val[keys[0]] !== undefined;
-				for (i = 0; i < max; i++) {
+				key = keys[i = 0];
+				pass = max > 0 && val[key] !== undefined;
+				while (i < max) {
 					if (pass) {
-						str += '"' + keys[i].replace(strReg, strReplace) + '":' + sss(val[keys[i]]);
-						pass = i + 1 < max && val[keys[i+1]] !== undefined;
+						str += '"' + key.replace(strReg, strReplace) + '":' + sss(val[key]);
+						key = keys[++i];
+						pass = i < max && val[key] !== undefined;
 						if (pass) {
 							str += ',';
 						}
 					} else {
-						pass = i + 1 < max && val[keys[i+1]] !== undefined;
+						key = keys[++i];
+						pass = i < max && val[key] !== undefined;
 					}
 				}
 				return str + '}';
