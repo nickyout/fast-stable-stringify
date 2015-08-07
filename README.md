@@ -1,10 +1,11 @@
 # fast-stable-stringify
 
+[![Build Status](https://travis-ci.org/nickyout/fast-stable-stringify.svg?branch=master)](https://travis-ci.org/nickyout/fast-stable-stringify)
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/nickyout_fast-stable.svg)](https://saucelabs.com/u/nickyout_fast-stable)
 
-_Android 4.0 is marked failing because it is slower than substack's, not because it does not work. Click on the badge to inspect the test details._
+_Android 4.0 is marked failing because it is slower than substack's, not because it does not work. Click on the badge(s) to inspect the test details._
 
-The most popular repository providing this feature is [substack's json-stable-stringify][sub]. The intent if this library is to provide a faster alternative for when performance is more important than features. It assumes you provide basic javascript values without circular references, and returns a non-indented string.  
+The most popular repository providing this feature is [substack's json-stable-stringify][sub]. The intent if this library is to provide a faster alternative for when performance is more important than features. It assumes you provide basic javascript values without circular references, and returns a non-indented string. It currently offers a performance boost in popular browsers of about 50%.  
 
 Usage:
 
@@ -16,9 +17,9 @@ stringify({ d: 0, c: 1, a: 2, b: 3, e: 4 }); // '{"a":2,"b":3,"c":1,"d":0,"e":4}
 Just like substack's, it does:
 
 *   handle all variations of all basic javascript values (number, string, boolean, array, object, null)
-*   handle undefined in the same way as JSON.stringify
-*	work without native JSON.strinxgify
-*   not support ie8 (and below) with complete certainty. At least, his build failed on ie8.	
+*   handle undefined in the same way as `JSON.stringify`
+*	work without native access to `JSON.stringify`
+*   **not support ie8 (and below) with complete certainty**. At least, his build failed on ie8.
 
 Unlike substack's, it does:
 
@@ -31,31 +32,35 @@ Tested validity (answer equal to substack's) and benchmark (faster than substack
 
 To (hopefully) prevent [certain smart browsers][cat] from concluding the stringification is not necessary because it is never used anywhere, I summed up all the lengths of the resulting strings of each benchmark contestant and printed it along with the result data. 
 
-Benchmark commit 8fdab80    |substack/json-stable-stringify |nickyout/fast-stable-stringify |faster*
-----------------------------|-------------------------------|-------------------------------|------
-chrome 26 on Windows 2003   |3,300 ops/sec ±5.69% (53 runs) |4,867 ops/sec ±5.72% (64 runs) |+47%
-chrome 43 on Mac 10.6       |4,317 ops/sec ±1.09% (97 runs) |6,070 ops/sec ±3.40% (90 runs) |+41%
-ie9 on Windows 2008         |2,648 ops/sec ±4.01% (18 runs) |5,258 ops/sec ±3.34% (31 runs) |+98%
-ie10 on Windows 2012        |2,251 ops/sec ±6.75% (69 runs) |4,112 ops/sec ±6.07% (71 runs) |+83%
-ie11 on Windows 2012 R2     |3,739 ops/sec ±3.33% (81 runs) |4,891 ops/sec ±4.42% (78 runs) |+31%
-safari 5 on Mac 10.6        |2,955 ops/sec ±3.02% (61 runs) |7,222 ops/sec ±3.00% (42 runs) |+144%
-safari 8 on Mac 10.10       |3,828 ops/sec ±4.72% (82 runs) |10,228 ops/sec ±9.21% (87 runs)|+167%
-firefox 20 on Windows 2008  |1,957 ops/sec ±8.58% (72 runs) |4,346 ops/sec ±6.16% (83 runs) |+122%
-firefox 39 on Mac 10.10     |3,147 ops/sec ±3.90% (83 runs) |4,876 ops/sec ±5.45% (80 runs) |+55%
-opera 11 on Windows 2003    |497 ops/sec ±4.62% (44 runs)   |634 ops/sec ±4.08% (38 runs)   |+27%
-opera 12 on Windows 2003    |1,744 ops/sec ±2.14% (55 runs) |2,797 ops/sec ±3.54% (19 runs) |+60%
-ipad 4.3 on Mac 10.6        |2,094 ops/sec ±1.01% (15 runs) |3,396 ops/sec ±0.75% (22 runs) |+62%
-ipad 8.2 on Mac 10.10       |4,029 ops/sec ±4.36% (36 runs) |4,630 ops/sec ±8.66% (32 runs) |+15%
-iphone 4.3 on Mac 10.6      |2,001 ops/sec ±7.63% (14 runs) |3,327 ops/sec ±2.99% (21 runs) |+66%
-iphone 8.2 on Mac 10.10     |3,899 ops/sec ±4.80% (44 runs) |10,100 ops/sec ±6.05% (48 runs)|+159%
-android 4.0 on Linux        |4,528 ops/sec ±0.78% (28 runs) |4,418 ops/sec ±2.66% (60 runs) |-2%
-android 5.1 on Linux        |3,576 ops/sec ±2.46% (83 runs) |5,010 ops/sec ±7.22% (84 runs) |+40%
+### Latest (interpreted) result
+
+Benchmark commit e0176c7	|nickyout/fast-stable-stringify	|substack/json-stable-stringify	|last time*	|fastest*
+----------------------------|-------------------------------|-------------------------------|-----------|----------
+chrome 26 on Windows 10		| x 2,848 ops/sec				| x 2,277 ops/sec				|+47%		|+25%
+chrome 44 on Windows 10		| x 5,573 ops/sec 				| x 3,719 ops/sec				|+41%**		|+50%
+internet explorer 9 on Windows 2008	| x 5,185 ops/sec 		| x 2,633 ops/sec				|+98%		|+97%
+internet explorer 10 on Windows 2012	| x 5,999 ops/sec 	| x 2,736 ops/sec				|+83%		|+119%
+internet explorer 11 on Windows 10	| x 5,419 ops/sec 		| x 4,055 ops/sec				|+31%		|+34%
+safari 5 on Windows 2008	| x 3,678 ops/sec				| x 1,405 ops/sec				|+144%		|+162%
+safari 8.1 on Mac 10.11		| x 2,191 ops/sec 				| x 1,199 ops/sec				|+167%**	|+83%
+firefox 20 on Windows 10	| x 4,253 ops/sec				| x 2,046 ops/sec				|+122%		|+108%
+firefox 39 on Windows 10	| x 3,384 ops/sec				| x 2,091 ops/sec				|+55%		|+62%
+opera 11 on Windows 2003	| x 453 ops/sec 				| x 339 ops/sec					|+27%		|+34%
+opera 12 on Windows 2003	| x 2,768 ops/sec				| x 1,664 ops/sec				|+60%		|+66%
+ipad 8.4 on Mac 10.10		| x 8,978 ops/sec				| x 3,991 ops/sec				|+15%**		|+125%
+iphone 8.4 on Mac 10.10		| x 7,252 ops/sec				| x 2,935 ops/sec				|+159%**	|+147%
+android 4.0 on Linux		| x 5,949 ops/sec				| x 6,092 ops/sec				|-2%		|-2%
+android 5.1 on Linux		| x 5,488 ops/sec				| x 2,809 ops/sec				|+40%		|+95%
 
 \* I did (nickyout / substack) - 1 in percentages
+\**	Different 'latest version'
+\*** Earliest ipad and iphone were unavailable because Sauce deprecated them. Adding for next run.
 
-Looks like it's generally faster. I would say about 50% in practice since chrome-ff-ie take the brunt of the used browsers (or see [caniuse browser usage][usg]). 
+Arguably faster than last time, but more importantly, most latest versions of the most popular browsers get a bump in speed. I'll call that a win. 
 
-See `./results.txt` for the original output.
+See [caniuse browser usage][usg] for the 'most popular browsers'.
+
+Click the build status badge to view the original output.
 
 ## Also
 It exposes the way strings are escaped for JSON:
@@ -92,8 +97,7 @@ zuul -- test/index.js
  
 ## TODO
 
-*	Travis
-*	Coverage
+*	Test more unicode chars
 
 [sub]: https://github.com/substack/json-stable-stringify
 [ben]: https://github.com/bestiejs/benchmark.js
