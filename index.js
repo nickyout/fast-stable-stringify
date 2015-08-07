@@ -53,11 +53,11 @@ function sss(val) {
 				return null;
 			} else if (isArray(val)) {
 				str = '[';
-				max = val.length;
-				for (i = 0; i < max - 1; i++) {
+				max = val.length - 1;
+				for (i = 0; i < max; i++) {
 					str += sss(val[i]) + ',';
 				}
-				if (max > 0) {
+				if (max > -1) {
 					str += sss(val[i]);
 				}
 				return str + ']';
