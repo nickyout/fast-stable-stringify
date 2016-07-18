@@ -3,7 +3,7 @@ browsers:
   - name: internet explorer
     version: 8..latest
   - name: microsoftedge
-  version: latest
+    version: latest
   - name: chrome
     version: [26, latest]
   - name: firefox
