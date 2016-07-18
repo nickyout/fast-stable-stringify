@@ -31,7 +31,8 @@
     "benchmark": "^1.0.0",
     "devnull": "0.0.12",
     "json-stable-stringify": "^1.0.0",
-    "mocha": "^2.2.5"
+    "mocha": "^2.2.5",
+    "tiny-sprintf": "^0.3.0"
   },
   "dependencies": {}
 }
