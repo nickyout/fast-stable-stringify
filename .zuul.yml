@@ -1,7 +1,5 @@
 ui: mocha-tdd
 browsers:
-  - name: internet explorer
-    version: 8..latest
   - name: microsoftedge
     version: latest
   - name: chrome
@@ -12,9 +10,11 @@ browsers:
     version: [5, latest]
   - name: opera
     version: [11, latest]
-  - name: ipad
-    version: ['7.1', latest]
-  - name: iphone
-    version: ['7.0', latest]
+  - name: internet explorer
+    version: 8..latest
   - name: android
     version: ['4.0',latest]
+  - name: ipad
+    version: ['7.1', '9.2']
+  - name: iphone
+    version: ['7.0', '9.2']
