@@ -1,9 +1,14 @@
-language: node_js
+language: 
+    - node_js
 node_js:
-- '0.12'
-before_install: npm install -g zuul
-install: npm install
-script: npm run test-browsers
+    - '0.12'
+before_install: 
+    - npm install -g zuul
+    - npm install -g zuul-ngrok
+install: 
+    - npm install
+script: 
+    - npm run test-browsers
 
 env:
   global:

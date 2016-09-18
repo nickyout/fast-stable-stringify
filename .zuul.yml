@@ -1,4 +1,8 @@
 ui: mocha-tdd
+concurrency: 2
+tunnel:
+    type: ngrok
+    bind_tls: true
 browsers:
   - name: microsoftedge
     version: latest
