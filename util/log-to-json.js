@@ -1,5 +1,6 @@
 var regHeader = /<(.+?) on (.+?)> console/;
 var regBench = /Finished benchmarking: (.+?) x (.+?) ops\/sec ±(.+?)% \((\d+) runs sampled\) \(cumulative string length: (\d+)\)/;
+var getPath = require('./get-path');
 
 /**
  * Something ike '3,456' becomes 3.456
@@ -11,31 +12,27 @@ function toNumber(opsPerSec) {
 }
 
 /**
- * Returns the element within obj under the path given by pathSegments.
- * If any segment does not yet exist, an object is created on that place.
- * @param {Object} obj
- * @param {string[]} pathSegments
- * @returns {Object}
+ * @typedef {Object} TestResult
+ * @prop {LibTestResult} [nickyout/fast-stable-stringify]
+ * @prop {LibTestResult} [substack/json-stable-stringify]
  */
-function getPath(obj, pathSegments) {
-	var target = obj;
-	var pathSeg;
-	var i;
-	for (i = 0; i < pathSegments.length; i++) {
-		pathSeg = pathSegments[i];
-		if (!target.hasOwnProperty(pathSeg)) {
-			target[pathSeg] = {};
-		}
-		target = target[pathSeg];
-	}
-	return target;
-}
 
 /**
- * @typedef {Object} BrowserTestResult
- * @prop {Object} [browser]
- * @prop {Object} [nickyout/fast-stable-stringify]
- * @prop {Object} [substack/json-stable-stringify]
+ * @typedef {Object} LibTestResult
+ * @prop {LibBrowserTestResult} [any]
+ */
+
+/**
+ * @typedef {Object} LibBrowserTestResult
+ * @prop {LibBrowserOSTestResult} [any]
+ */
+
+/**
+ * @typedef {Object} LibBrowserOSTestResult
+ * @prop {number} opsPerSec
+ * @prop {number} percentage - in 100
+ * @prop {number} numSamples
+ * @prop {number} cumStrLength
  */
 
 /**
@@ -43,7 +40,7 @@ function getPath(obj, pathSegments) {
  * @param {Object} collection
  * @param {string[]} path
  * @param {string} logText - contents of a text file
- * @returns {Object}
+ * @returns {TestResult}
  */
 function logToJSON(collection, path, logText) {
 	var textLines = logText.split('\n');
@@ -69,7 +66,7 @@ function logToJSON(collection, path, logText) {
 			match = textLine.match(regBench);
 			if (match) {
 				repo = match[1];
-				data = getPath(collection, path.concat(repo, browser, os));
+				data = getPath(collection, path.concat(repo, browser, os), true);
 				data.opsPerSec = toNumber(match[2]);
 				data.percentage = +match[3];
 				data.numSamples = +match[4];
