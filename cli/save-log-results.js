@@ -3,8 +3,8 @@ var getGitHash = require('../util/get-git-hash');
 var fs = require('fs');
 var path = require('path');
 
-module.exports = function(pathToLogFile, jsonDir, callback) {
-	getGitHash('HEAD', function(errGitHash, gitHash) {
+module.exports = function(pathToLogFile, jsonDir, gitRef, callback) {
+	getGitHash(gitRef, function(errGitHash, gitHash) {
 		var jsonDestPath;
 		var collection;
 		var logText;

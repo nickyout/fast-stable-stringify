@@ -1,13 +1,27 @@
 var api = {
-	'save': require('./save-log-results')
+	/**
+	 * @param {string} logFilePath,
+	 * @param {string} jsonDir,
+	 * @param {string} gitRef (for tagging)
+	 * @param {Function} callback
+	 */
+	'save': require('./save-log-results'),
+	/**
+	 * @param {string} filePath1
+	 * @param {string} competitor1
+	 * @param {string} filePath2
+	 * @param {string} competitor2
+	 * @param {Function} callback
+	 */
+	'compare': require('./create-comparison-table')
 };
 var args;
 
 function cb(err, result) {
 	if (err) {
-		console.log('Error:', err);
+		console.error('Error:', err);
 	} else {
-		console.log('Done:', result);
+		console.log(result);
 	}
 }
 

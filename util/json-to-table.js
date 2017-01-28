@@ -47,6 +47,13 @@ function compareCompetitors(competitor1, competitor2) {
 	return results;
 }
 
+/**
+ *
+ * @param {Object} collection
+ * @param {string[]} competitorPath1
+ * @param {string[]} competitorPath2
+ * @returns {string}
+ */
 function jsonToTable(collection, competitorPath1, competitorPath2) {
 	var tableRows = [];
 	var i;
