@@ -28,7 +28,9 @@ function compareDataPoints(data1, data2) {
  * @returns {string}
  */
 function drawRow(str, rowData) {
-	return sprintf(str, rowData.header, rowData.value1, rowData.value2, rowData.diff);
+    var val1 = typeof rowData.value1 == "number" ? rowData.value1.toFixed(3) : rowData.value1;
+    var val2 = typeof rowData.value2 == "number" ? rowData.value2.toFixed(3) : rowData.value2;
+	return sprintf(str, rowData.header, val1, val2, rowData.diff);
 }
 
 function compareCompetitors(competitor1, competitor2) {

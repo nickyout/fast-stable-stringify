@@ -13,8 +13,16 @@ var api = {
 	 * @param {string} competitor2
 	 * @param {Function} callback
 	 */
-	'compare': require('./create-comparison-table')
+	'compare': require('./create-comparison-table'),
+
+    'help': function(cb) {
+        cb(null, [
+            'Usage: node cli save <logfilepath> <jsondir> <gitref>',
+            '       node cli compare <filepath1> <competitor1> <filepath2> <competitor2>'
+        ].join('\n'));
+    }
 };
+var method;
 var args;
 
 function cb(err, result) {
@@ -25,5 +33,9 @@ function cb(err, result) {
 	}
 }
 
-args = process.argv.slice(2).concat(cb);
-api[args[0]].apply(api, args.slice(1));
+args = process.argv.slice(2);
+method = args.shift();
+if (!api.hasOwnProperty(method)) {
+    method = 'help';
+}
+api[method].apply(api, args.concat(cb));
