@@ -8,7 +8,7 @@ var getPath = require('./get-path');
  * @returns {number}
  */
 function toNumber(opsPerSec) {
-	return parseFloat(opsPerSec.replace(',', '.'));
+	return parseFloat(opsPerSec.replace(',', ''));
 }
 
 /**
