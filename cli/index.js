@@ -17,7 +17,7 @@ var api = {
 
     'help': function(cb) {
         cb(null, [
-            'Usage: node cli save <logfilepath> <jsondir> <gitref>',
+            'Usage: node cli save <logfilepath> <jsondir> [<filename>]',
             '       node cli compare <filepath1> <competitor1> <filepath2> <competitor2>'
         ].join('\n'));
     }
