@@ -18,9 +18,9 @@ suite("Unit test", function(){
 			assert.equal(mine, expectedVal);
 			numComparisons++;
 		});
-		//console.log(numComparisons + " comparisons made");
+		console.log(numComparisons + " comparisons made");
 	});
-	test("Expected number of comparisons run (599)", function() {
-		assert.equal(numComparisons, 599);
+	test("Expected number of comparisons run (606)", function() {
+		assert.equal(numComparisons, 606);
 	})
 });

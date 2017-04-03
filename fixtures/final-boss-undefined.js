@@ -22,7 +22,8 @@ module.exports = {
 			"NEGATIVE_MIN_VALUE": -5e-324,
 			"TRUE": true,
 			"FALSE": false,
-			"NULL": null
+			"NULL": null,
+			"zzz": "ending"
 		},
 		-1.7976931348623157e+308,
 		-5e-324,

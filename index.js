@@ -5,7 +5,7 @@ var toString = {}.toString,
 	objKeys = Object.keys || function(obj) {
 			var keys = [];
 			for (var name in obj) {
-				if (obj.hasOwnProperty(name)) {
+				if (obj[name] !== undefined) {
 					keys.push(name);
 				}
 			}
@@ -46,7 +46,7 @@ module.exports.stringSearch = strReg;
 module.exports.stringReplace = strReplace;
 
 function sss(val) {
-	var i, max, str, keys, key, pass;
+	var i, max, str, keys, key;
 	switch (typeof val) {
 		case "object":
 			if (val === null) {
@@ -65,23 +65,19 @@ function sss(val) {
 				// only object is left
 				keys = objKeys(val).sort();
 				max = keys.length;
-				str = "{";
-				key = keys[i = 0];
-				pass = max > 0 && val[key] !== undefined;
+				str = "";
+				i = 0;
 				while (i < max) {
-					if (pass) {
-						str += '"' + key.replace(strReg, strReplace) + '":' + sss(val[key]);
-						key = keys[++i];
-						pass = i < max && val[key] !== undefined;
-						if (pass) {
+					key = keys[i];
+					if (val[key] !== undefined) {
+						if (str) {
 							str += ',';
 						}
-					} else {
-						key = keys[++i];
-						pass = i < max && val[key] !== undefined;
+						str += '"' + key.replace(strReg, strReplace) + '":' + sss(val[key]);
 					}
+					i++;
 				}
-				return str + '}';
+				return '{' + str + '}';
 			}
 		case "undefined":
 			return null;
