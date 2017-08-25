@@ -1,4 +1,5 @@
 # fast-stable-stringify
+*Notice: The License of this repository has been changed from GPL-3.0 to MIT as of 2017-08-25. All following commits will fall under the MIT license.*
 
 [![Build Status](https://travis-ci.org/nickyout/fast-stable-stringify.svg?branch=master)](https://travis-ci.org/nickyout/fast-stable-stringify)
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/nickyout_fast-stable.svg)](https://saucelabs.com/u/nickyout_fast-stable)
