@@ -1,7 +1,7 @@
 var fs = require('fs-extra');
 var path = require('path');
-var objectPath = require('../object-path');
-var getGitHashSync = require('../get-git-hash-sync');
+var objectPath = require('../util/object-path');
+var getGitHashSync = require('../util/get-git-hash-sync');
 
 /**
  * @typedef {Object} JSONBenchmarkObject

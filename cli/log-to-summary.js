@@ -1,6 +1,6 @@
 var readline = require('readline');
 
-var regHeader = /^<(.+?) on (.+?)> /;
+var regHeader = /^<(.+?) on (.+?)>/;
 var omitChar = "-";
 var objMoot = { type: 'comment', value: '' };
 
