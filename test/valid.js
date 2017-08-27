@@ -1,7 +1,7 @@
 var substackStringify = require('json-stable-stringify'),
 	myStringify = require('../index'),
 	assert = require('assert'),
-	eachRecursive = require('../util/eachRecursive');
+	eachRecursive = require('./util/eachRecursive');
 
 var fixtures = require('../fixtures'),
 	input = fixtures.input,
