@@ -1,8 +1,18 @@
 var fs = require('fs-extra');
 var path = require('path');
 var objectPath = require('../object-path');
-var stableStringify = require('../../index');
 var getGitHashSync = require('../get-git-hash-sync');
+
+/**
+ * @typedef {Object} JSONBenchmarkObject
+ * @prop {string} name
+ * @prop {string} version
+ * @prop {string} url
+ * @prop {string} browser
+ * @prop {string} os
+ * @prop {number} hz
+ * @prop {Benchmark.Stats} stats
+ */
 
 /**
  * Returns the version string of the current working directory.
@@ -17,10 +27,10 @@ function getMyLatestVersion() {
 }
 
 /**
- * @param {Object} fileCache
+ * @param {Object<Promise>} fileCache
  * @param {string} filePath
  * @param {string[]} objectPathSegments
- * @param {Object} obj
+ * @param {JSONBenchmarkObject} obj
  * @returns {Promise}
  */
 function writeObjectToFileCache(fileCache, filePath, objectPathSegments, obj) {
