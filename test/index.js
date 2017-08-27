@@ -1,4 +1,4 @@
-//require('./valid');
+require('./valid');
 require('./fastest');
 //require("./log-to-json");
 //require('./get-git-hash');

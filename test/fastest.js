@@ -30,7 +30,7 @@ suite("Benchmark", function() {
 			.Suite('fastest', {
 				onCycle: function cycle(e) {
 					var bench = e.target;
-					console.log('Finished benchmarking: '+ bench, bench.error);
+					console.log('Finished benchmarking: '+ bench);
 					dataSets.push({
 						name: bench.name,
 						error: bench.error ? bench.error.message : '',

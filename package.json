@@ -8,7 +8,7 @@
   },
   "scripts": {
     "zuul": "zuul -- test/index.js",
-    "test": "node ./node_modules/.bin/mocha --ui tdd test/index"
+    "test": "echo \"<nodejs on local>\" && node ./node_modules/.bin/mocha --ui tdd test/index"
   },
   "repository": {
     "type": "git",
