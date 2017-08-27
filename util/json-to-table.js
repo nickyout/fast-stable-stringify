@@ -1,4 +1,4 @@
-var getPath = require('./get-path');
+var getPath = require('./object-path');
 var sprintf = require('tiny-sprintf/dist/sprintf.all');
 var strHeader = '%-42.42s%|%-30.30s|%-30.30s|%-11.11s';
 var strRow = '%-42.42s%|%22.22s ops/sec|%22.22s ops/sec|%+9.9d%';
