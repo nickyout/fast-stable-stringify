@@ -1,11 +1,12 @@
 # fast-stable-stringify
+*Notice: The License of this repository has been changed from GPL-3.0 to MIT as of 2017-08-25. All following commits will fall under the MIT license.*
 
 [![Build Status](https://travis-ci.org/nickyout/fast-stable-stringify.svg?branch=master)](https://travis-ci.org/nickyout/fast-stable-stringify)
 [![Sauce Test Status](https://saucelabs.com/browser-matrix/nickyout_fast-stable.svg)](https://saucelabs.com/u/nickyout_fast-stable)
 
-_Android 4.0 is marked failing because it is slower than substack's, not because it does not work. Click on the badge(s) to inspect the test details._
+_The test only succeeds when mine is faster than substack's in a particular browser._
 
-The most popular repository providing this feature is [substack's json-stable-stringify][sub]. The intent if this library is to provide a faster alternative for when performance is more important than features. It assumes you provide basic javascript values without circular references, and returns a non-indented string. It currently offers a performance boost in popular browsers of about 50%.  
+The most popular repository providing this feature is [substack's json-stable-stringify][sub]. The intent if this library is to provide a faster alternative for when performance is more important than features. It assumes you provide basic javascript values without circular references, and returns a non-indented string. It currently offers a performance boost in popular browsers of about 50%. Less so for modern desktop browsers (30%), more so for modern (mobile) safari (100%). For most legacy browsers, about 75%.
 
 Usage:
 
@@ -27,6 +28,10 @@ Unlike substack's, it does:
 *   not check for circular references
 *   not check for .toJSON() methods on objects
 
+**Upgrade warning (0.1.1 to 0.2.0):**
+
+Version 0.1.1 would sometimes return invalid JSON strings when given object properties with the value `undefined`. The response was still consistent and unique given the other properties, so I suspect in most cases this should have caused no problems. However, **if your own project is storing the results of this library (0.1.1), do note that the results will be slightly different starting with 0.2.0**.
+
 ## Test results
 Tested validity (answer equal to substack's) and benchmark (faster than substack's). A test passes only if it has the same output as substack's but is faster (as concluded by [benchmark.js][ben]). 
 
@@ -34,27 +39,23 @@ To (hopefully) prevent [certain smart browsers][cat] from concluding the stringi
 
 ### Latest (interpreted) result
 
-Benchmark commit e0176c7	|nickyout/fast-stable-stringify	|substack/json-stable-stringify	|last time*	|fastest*
-----------------------------|-------------------------------|-------------------------------|-----------|----------
-chrome 26 on Windows 10		| x 2,848 ops/sec				| x 2,277 ops/sec				|+47%		|+25%
-chrome 44 on Windows 10		| x 5,573 ops/sec 				| x 3,719 ops/sec				|+41%**		|+50%
-internet explorer 9 on Windows 2008	| x 5,185 ops/sec 		| x 2,633 ops/sec				|+98%		|+97%
-internet explorer 10 on Windows 2012	| x 5,999 ops/sec 	| x 2,736 ops/sec				|+83%		|+119%
-internet explorer 11 on Windows 10	| x 5,419 ops/sec 		| x 4,055 ops/sec				|+31%		|+34%
-safari 5 on Windows 2008	| x 3,678 ops/sec				| x 1,405 ops/sec				|+144%		|+162%
-safari 8.1 on Mac 10.11		| x 2,191 ops/sec 				| x 1,199 ops/sec				|+167%**	|+83%
-firefox 20 on Windows 10	| x 4,253 ops/sec				| x 2,046 ops/sec				|+122%		|+108%
-firefox 39 on Windows 10	| x 3,384 ops/sec				| x 2,091 ops/sec				|+55%		|+62%
-opera 11 on Windows 2003	| x 453 ops/sec 				| x 339 ops/sec					|+27%		|+34%
-opera 12 on Windows 2003	| x 2,768 ops/sec				| x 1,664 ops/sec				|+60%		|+66%
-ipad 8.4 on Mac 10.10		| x 8,978 ops/sec				| x 3,991 ops/sec				|+15%**		|+125%
-iphone 8.4 on Mac 10.10		| x 7,252 ops/sec				| x 2,935 ops/sec				|+159%**	|+147%
-android 4.0 on Linux		| x 5,949 ops/sec				| x 6,092 ops/sec				|-2%		|-2%
-android 5.1 on Linux		| x 5,488 ops/sec				| x 2,809 ops/sec				|+40%		|+95%
+Benchmark commit 14ad70c5e1|nickyout/fast-stable-stringify|substack/json-stable-stringify|last time* |fastest*
+---------------------------|------------------------------|------------------------------|-----------|-----------
+safari 5 on Windows 2008   | x 4,317 ops/sec              | x 1,534 ops/sec              |+162%      |+181%
+safari 10 on Mac 10.12     | x 6,830 ops/sec              | x 3,430 ops/sec              |    		 |+99%
+opera 12 on Windows 2003   | x 3,084 ops/sec              | x 1,938 ops/sec              |+66%       |+59%
+microsoftedge 14 on Windows| x 5,717 ops/sec              | x 4,513 ops/sec              |    		 |+26%
+iphone 9.2 on Mac 10.10    | x 6,643 ops/sec              | x 3,829 ops/sec              |    		 |+73%
+ipad 9.2 on Mac 10.10      | x 8,563 ops/sec              | x 3,374 ops/sec              |    		 |+153%
+internet explorer 9 on Wind| x 6,236 ops/sec              | x 2,954 ops/sec              |+97%	     |+111%
+internet explorer 11 on Win| x 5,236 ops/sec              | x 3,729 ops/sec              |+34%       |+40%
+internet explorer 10 on Win| x 7,520 ops/sec              | x 3,435 ops/sec              |+119%      |+118%
+firefox 20 on Windows 10   | x 4,263 ops/sec              | x 2,038 ops/sec              |+108%      |+109%
+chrome 57 on Windows 2008  | x 9,116 ops/sec              | x 7,191 ops/sec              |    		 |+26%
+chrome 26 on Windows 10    | x 5,696 ops/sec              | x 3,314 ops/sec              |+47%		 |+71%
+android 6.0 on Linux       | x 6,199 ops/sec              | x 4,775 ops/sec              |    		 |+29%
 
 \* I did (nickyout / substack) - 1 in percentages
-\**	Different 'latest version'
-\*** Earliest ipad and iphone were unavailable because Sauce deprecated them. Adding for next run.
 
 Arguably faster than last time, but more importantly, most latest versions of the most popular browsers get a bump in speed. I'll call that a win. 
 

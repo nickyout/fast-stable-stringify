@@ -5,13 +5,31 @@ var toString = {}.toString,
 	objKeys = Object.keys || function(obj) {
 			var keys = [];
 			for (var name in obj) {
-				if (obj.hasOwnProperty(name)) {
+				if (obj[name] !== undefined) {
 					keys.push(name);
 				}
 			}
 			return keys;
 		},
-	strEscape = require('./escape');
+	strReg = /[\u0000-\u001f"\\]/g,
+	strReplace = function(str) {
+		var code = str.charCodeAt(0);
+		switch (code) {
+			case 34: return '\\"';
+			case 92: return '\\\\';
+			case 12: return "\\f";
+			case 10: return "\\n";
+			case 13: return "\\r";
+			case 9: return "\\t";
+			case 8: return "\\b";
+			default:
+				if (code > 15) {
+					return "\\u00" + code.toString(16);
+				} else {
+					return "\\u000" + code.toString(16);
+				}
+		}
+	};
 
 /**
  * Simple stable stringify. Object keys sorted. No options, no spaces.
@@ -24,8 +42,11 @@ module.exports = function simpleStableStringify(val) {
 	}
 };
 
+module.exports.stringSearch = strReg;
+module.exports.stringReplace = strReplace;
+
 function sss(val) {
-	var i, max, str, keys, key, pass;
+	var i, max, str, keys, key;
 	switch (typeof val) {
 		case "object":
 			if (val === null) {
@@ -44,28 +65,24 @@ function sss(val) {
 				// only object is left
 				keys = objKeys(val).sort();
 				max = keys.length;
-				str = "{";
-				key = keys[i = 0];
-				pass = max > 0 && val[key] !== undefined;
+				str = "";
+				i = 0;
 				while (i < max) {
-					if (pass) {
-						str += '"' + strEscape(key) + '":' + sss(val[key]);
-						key = keys[++i];
-						pass = i < max && val[key] !== undefined;
-						if (pass) {
+					key = keys[i];
+					if (val[key] !== undefined) {
+						if (str) {
 							str += ',';
 						}
-					} else {
-						key = keys[++i];
-						pass = i < max && val[key] !== undefined;
+						str += '"' + key.replace(strReg, strReplace) + '":' + sss(val[key]);
 					}
+					i++;
 				}
-				return str + '}';
+				return '{' + str + '}';
 			}
 		case "undefined":
 			return null;
 		case "string":
-			return '"' + strEscape(val) + '"';
+			return '"' + val.replace(strReg, strReplace) + '"';
 		default:
 			return val;
 	}
