@@ -29,12 +29,10 @@
   "homepage": "https://github.com/nickyout/fast-stable-stringify#readme",
   "devDependencies": {
     "benchmark": "^1.0.0",
-    "devnull": "0.0.12",
     "fs-extra": "^4.0.1",
     "json-stable-stringify": "^1.0.0",
     "markdown-table": "^1.1.1",
-    "mocha": "^2.2.5",
-    "tiny-sprintf": "^0.3.0"
+    "mocha": "^2.2.5"
   },
   "dependencies": {}
 }
