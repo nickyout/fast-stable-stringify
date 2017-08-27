@@ -22,6 +22,7 @@ var table = require('markdown-table');
  * @prop {number} rme
  * @prop {number} rhz
  * @prop {boolean} fastest
+ * @prop {boolean} succeeded
  */
 
 function getKeyMapUnion(arrObjects) {
@@ -63,7 +64,17 @@ function groupDataSetsByBrowserAndOS(jsonBenchObjects) {
 }
 
 function sortFastest(jsonA, jsonB) {
-	return (jsonA.stats.mean + jsonA.stats.moe > jsonB.stats.mean + jsonB.stats.moe ? 1 : -1);
+	if (!isValid(jsonA) || jsonA.stats.mean + jsonA.stats.moe > jsonB.stats.mean + jsonB.stats.moe && isValid(jsonB)) {
+		// jsonB must win
+		return 1;
+	} else {
+		// all other cases: jsonA must win
+		return -1;
+	}
+}
+
+function isValid(json) {
+	return json.stats.mean > 0;
 }
 
 /**
@@ -75,18 +86,21 @@ function createDataSetComparisonResult(dataSetGroup) {
 
 	var browser = dataSetGroup.browser;
 	var os = dataSetGroup.os;
-	var dataSets = dataSetGroup.dataSets;
+	var dataSets;
 	var dataSetFastest;
 	var resultMap = {};
 
-	dataSets.sort(sortFastest);
+	dataSets = dataSetGroup.dataSets
+		.slice()
+		.sort(sortFastest);
 	dataSetFastest = dataSets[0];
 
 	dataSets.forEach(function(el) {
 		resultMap[getLibName(el)] = {
 			hz: el.hz,
-			rme: el.stats.rme,
+			rme: el.stats.rme / 100,
 			fastest: Benchmark.prototype.compare.call(dataSetFastest, el) === 0,
+			succeeded: isValid(el),
 			rhz: el.hz / dataSetFastest.hz
 		};
 	});
@@ -114,6 +128,15 @@ function compareResults(files) {
 		});
 }
 
+// Crude, but should be enough internally
+function toFixedWidth(value, maxChars) {
+	var result = value.toFixed(2).substr(0, maxChars);
+	if (result[result.length - 1] == '.') {
+		result = result.substr(0, result.length - 2) + ' ';
+	}
+	return result;
+}
+
 /**
  *
  * @param {DataSetComparisonResult[]} results
@@ -123,7 +146,8 @@ function createTable(results) {
 	var header = ['Browser', 'OS' ];
 	var libNames = [];
 	var rows = [];
-	var emptyCell = '';
+	var errorCell = 'X';
+	var emptyCell = '?';
 	results.forEach(function(comparisonResult) {
 		var resultMap = comparisonResult.resultMap;
 		var libName;
@@ -143,7 +167,13 @@ function createTable(results) {
 		libResults = libNames.map(function(libName) {
 			result = resultMap[libName];
 			if (result) {
-				return (result.fastest ? '*' : '') + Math.round(100 * result.rhz) + '%';
+				if (result.succeeded) {
+					return (result.fastest ? '*' : '')
+						+ (100 * result.rhz).toFixed(2) + '% '
+						+ '(\xb1' + toFixedWidth(100 * result.rhz * result.rme, 4) + '%)';
+				} else {
+					return errorCell;
+				}
 			} else {
 				return emptyCell;
 			}
@@ -164,9 +194,12 @@ function getLibName(el) {
 
 
 fs.readdir('result', function(err, files) {
-	compareResults(files.map(function(file) { return './result/' + file; }))
-		.then(createTable)
-		.then(function(str) {
-			console.log(str);
-		});
+	compareResults(files
+		.filter(function(filename) { return filename !== 'JSON.stringify-native.json' })
+		.map(function(file) { return './result/' + file; })
+	)
+			.then(createTable)
+			.then(function(str) {
+				console.log(str);
+			});
 });

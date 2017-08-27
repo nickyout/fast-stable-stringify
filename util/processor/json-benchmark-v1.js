@@ -11,6 +11,7 @@ var getGitHashSync = require('../get-git-hash-sync');
  * @prop {string} browser
  * @prop {string} os
  * @prop {number} hz
+ * @prop {string} error
  * @prop {Benchmark.Stats} stats
  */
 
@@ -90,6 +91,9 @@ JSONBenchmarkV1Processor.prototype.process = function process(browser, os, text)
 	if (data.name == 'index') {
 		pkg = require(path.join(this._rootDir, 'package.json'));
 		version = getMyLatestVersion();
+    } else if (data.name == 'native') {
+        pkg = { name: 'JSON.stringify', url: 'n/a' }
+        version = 'native';
 	} else {
 		pkg = require(data.name + '/package.json');
 		version = pkg.version;
@@ -101,6 +105,7 @@ JSONBenchmarkV1Processor.prototype.process = function process(browser, os, text)
 		browser: browser,
 		os: os,
 		hz: data.hz,
+		error: data.error,
 		stats: data.stats
 	};
 	var filename = obj.name + '-' + obj.version + '.json';

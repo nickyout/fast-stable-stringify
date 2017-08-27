@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "test-browsers": "zuul -- test/index.js",
+    "zuul": "zuul -- test/index.js",
     "test": "node ./node_modules/.bin/mocha --ui tdd test/index"
   },
   "repository": {
@@ -29,6 +29,8 @@
   "homepage": "https://github.com/nickyout/fast-stable-stringify#readme",
   "devDependencies": {
     "benchmark": "^1.0.0",
+    "fast-stable-stringify": "git+https://github.com/nickyout/fast-stable-stringify.git#0.2.0",
+    "faster-stable-stringify": "^1.0.0",
     "fs-extra": "^4.0.1",
     "json-stable-stringify": "^1.0.0",
     "markdown-table": "^1.1.1",
