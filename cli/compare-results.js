@@ -192,14 +192,8 @@ function getLibName(el) {
 	return el.name + '@' + el.version;
 }
 
-
-fs.readdir('result', function(err, files) {
-	compareResults(files
-		.filter(function(filename) { return filename !== 'JSON.stringify-native.json' })
-		.map(function(file) { return './result/' + file; })
-	)
-			.then(createTable)
-			.then(function(str) {
-				console.log(str);
-			});
-});
+module.exports = function(files, callback) {
+	compareResults(files)
+		.then(createTable)
+		.then(callback);
+};
