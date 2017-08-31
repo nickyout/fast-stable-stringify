@@ -1,8 +1,8 @@
-var readline = require('readline');
-var input = readline.createInterface({ input: process.stdin, terminal: false });
-var summaryFormat = /^browser:([\w\s\.]+);os:([\w\s\.]+);(?:type:(.*);)?(.*)/;
+var Transform = require('stream').Transform;
 var path = require('path');
+var util = require('util');
 
+var summaryFormat = /^browser:([\w\s\.]+);os:([\w\s\.]+);(?:type:(.*);)?(.*)/;
 var activeProcessors = {};
 var rootDir = path.resolve(__dirname, '..');
 
@@ -34,20 +34,6 @@ var rootDir = path.resolve(__dirname, '..');
  */
 function processSummary(inputStream, processors) {
 	inputStream.on('line', function(line) {
-		var result = line.match(summaryFormat);
-		var type;
-
-		if (result) {
-			type = result[3];
-			if (processors.hasOwnProperty(type)) {
-				if (!activeProcessors.hasOwnProperty(type)) {
-					activeProcessors[type] = new processors[type](rootDir);
-				}
-				activeProcessors[type].process(result[1], result[2], result[4]);
-			} else {
-				console.error('Omitting line:', line);
-			}
-		}
 	});
 
 	inputStream.on('close', function() {
@@ -58,8 +44,41 @@ function processSummary(inputStream, processors) {
 	})
 }
 
-processSummary(input, {
-	// I'm fairly certain I will come up with another fancy format in a year.
-	// I suspect this is pluggable enough for that moment
-	'json-benchmark-v1': require('./processor/json-benchmark-v1')
-});
+function SummaryReader(processors) {
+	Transform.call(this);
+	this._processors = processors || {};
+	this._activeProcessors = {};
+}
+
+util.inherits(SummaryReader, Transform);
+
+SummaryReader.prototype._transform = function(chunk, encoding, callback) {
+	var line = chunk.toString();
+	var result = line.match(summaryFormat);
+	var allProcessors = this._processors;
+	var activeProcessors = this._activeProcessors;
+	var type;
+	if (result) {
+		type = result[3];
+		if (allProcessors.hasOwnProperty(type)) {
+			if (!activeProcessors.hasOwnProperty(type)) {
+				activeProcessors[type] = new allProcessors[type](rootDir);
+			}
+			activeProcessors[type].process(result[1], result[2], result[4]);
+		} else {
+			process.stderr.write('Omitting line: ' + line);
+		}
+	}
+	callback();
+};
+
+SummaryReader.prototype._flush = function() {
+	var activeProcessors = this._activeProcessors;
+	process.stderr.write('flushing...');
+	for (var name in activeProcessors) {
+		activeProcessors[name].finish();
+		delete activeProcessors[name];
+	}
+};
+
+module.exports = SummaryReader;

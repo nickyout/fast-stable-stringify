@@ -14,7 +14,6 @@ var getLibInfo = require('../util/get-lib-info');
  * @prop {Benchmark.Stats} stats
  */
 
-
 /**
  * JSONBenchmarkV1Processor
  * @implements SummaryProcessor

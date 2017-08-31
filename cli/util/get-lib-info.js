@@ -1,4 +1,5 @@
 var getGitHashSync = require('./get-git-hash-sync');
+var path = require('path');
 
 module.exports = function(rootDir, libName) {
 	var pkg;
