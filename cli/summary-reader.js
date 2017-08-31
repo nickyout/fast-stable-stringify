@@ -1,10 +1,7 @@
 var Transform = require('stream').Transform;
-var path = require('path');
 var util = require('util');
 
 var summaryFormat = /^browser:([\w\s\.]+);os:([\w\s\.]+);(?:type:(.*);)?(.*)/;
-var activeProcessors = {};
-var rootDir = path.resolve(__dirname, '..');
 
 /**
  * @interface SummaryProcessor
@@ -27,25 +24,9 @@ var rootDir = path.resolve(__dirname, '..');
  * @returns {Promise}
  */
 
-/**
- *
- * @param {Readable} inputStream
- * @param {Object} processors
- */
-function processSummary(inputStream, processors) {
-	inputStream.on('line', function(line) {
-	});
-
-	inputStream.on('close', function() {
-		for (var name in activeProcessors) {
-			activeProcessors[name].finish();
-			delete activeProcessors[name];
-		}
-	})
-}
-
-function SummaryReader(processors) {
+function SummaryReader(processors, rootDir) {
 	Transform.call(this);
+	this._rootDir = rootDir;
 	this._processors = processors || {};
 	this._activeProcessors = {};
 }
@@ -62,11 +43,11 @@ SummaryReader.prototype._transform = function(chunk, encoding, callback) {
 		type = result[3];
 		if (allProcessors.hasOwnProperty(type)) {
 			if (!activeProcessors.hasOwnProperty(type)) {
-				activeProcessors[type] = new allProcessors[type](rootDir);
+				activeProcessors[type] = new allProcessors[type](this._rootDir);
 			}
 			activeProcessors[type].process(result[1], result[2], result[4]);
 		} else {
-			process.stderr.write('Omitting line: ' + line);
+			process.stderr.write('Omitting line: ' + line + '\n');
 		}
 	}
 	callback();

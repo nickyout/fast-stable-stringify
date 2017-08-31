@@ -27,16 +27,16 @@ function processLine(line) {
 
 //module.exports = logToSummary;
 
-var currentHeader;
-
 module.exports = new Transform({
 	transform: function(chunk, encoding, callback) {
 		var data = processLine(chunk.toString());
+		var currentHeader = this._ch;
 		if (data.type == 'header') {
 			currentHeader = data.value;
 		} else if (data.type == "line" && currentHeader) {
 			this.push(currentHeader + data.value);
 		}
+		this._ch = currentHeader;
 		callback();
 	}
 });

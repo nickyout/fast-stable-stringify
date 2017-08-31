@@ -1,14 +1,21 @@
 var argv = require('minimist')(process.argv.slice(2), { '--': true });
+var path = require('path');
+var rootDir = path.resolve(__dirname, '..');
+var split = require('split');
 
 function readLog() {
+	var readline = require('readline');
+	var rl = readline.createInterface(process.stdin, null, null, false);
 	var logToSummary = require('./log-to-summary');
 	var SummaryReader = require('./summary-reader');
 	var reader = new SummaryReader({
 		// I'm fairly certain I will come up with another fancy format in a year.
 		// I suspect this is pluggable enough for that moment
 		'json-benchmark-v1': require('./processor/json-benchmark-v1')
-	});
+	}, rootDir);
+
 	process.stdin
+		.pipe(split())
 		.pipe(logToSummary)
 		.pipe(reader);
 }
