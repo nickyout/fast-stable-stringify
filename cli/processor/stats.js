@@ -15,15 +15,15 @@ var getLibInfo = require('../util/get-lib-info');
  */
 
 /**
- * JSONBenchmarkV1Processor
+ * BenchmarkStatsProcessor
  * @implements SummaryProcessor
  */
-function JSONBenchmarkV1Processor(rootDir) {
+function BenchmarkStatsProcessor(rootDir) {
 	this._rootDir = rootDir;
 	this._fileCache = new FileCache({ _metaData: { type: 'benchmark-stats' }});
 }
 
-JSONBenchmarkV1Processor.prototype.process = function process(browser, os, text) {
+BenchmarkStatsProcessor.prototype.process = function process(browser, os, text) {
 	var rootDir = this._rootDir;
 	var data = JSON.parse(text);
 	var info = getLibInfo(rootDir, data.name);
@@ -42,8 +42,8 @@ JSONBenchmarkV1Processor.prototype.process = function process(browser, os, text)
 	return this._fileCache.write(filepath, [browser, os], obj);
 };
 
-JSONBenchmarkV1Processor.prototype.finish = function finish() {
+BenchmarkStatsProcessor.prototype.finish = function finish() {
 	this._fileCache.flush();
 };
 
-module.exports = JSONBenchmarkV1Processor;
+module.exports = BenchmarkStatsProcessor;

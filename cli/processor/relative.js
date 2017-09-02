@@ -34,16 +34,16 @@ function dateToPrettyString(date) {
  */
 
 /**
- * JSONBenchmarkV2Processor
+ * BenchmarkRelativeProcessor
  * @implements SummaryProcessor
  */
-function JSONBenchmarkV2Processor(rootDir) {
+function BenchmarkRelativeProcessor(rootDir) {
 	this._rootDir = rootDir;
 	this._fileCache = new FileCache({ _metaData: { type: 'benchmark-relative' }});
 	this._filePath = path.join(rootDir, 'result', dateToPrettyString(new Date()) + '.json');
 }
 
-JSONBenchmarkV2Processor.prototype.process = function process(browser, os, text) {
+BenchmarkRelativeProcessor.prototype.process = function process(browser, os, text) {
 	var rootDir = this._rootDir;
 	var data = JSON.parse(text);
 	var info = getLibInfo(rootDir, data.name);
@@ -65,9 +65,9 @@ JSONBenchmarkV2Processor.prototype.process = function process(browser, os, text)
 	return this._fileCache.write(this._filePath, [browser, os, libFullName], obj);
 };
 
-JSONBenchmarkV2Processor.prototype.finish = function finish() {
+BenchmarkRelativeProcessor.prototype.finish = function finish() {
 	this._fileCache.flush();
 };
 
-module.exports = JSONBenchmarkV2Processor;
+module.exports = BenchmarkRelativeProcessor;
 
