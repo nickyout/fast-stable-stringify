@@ -2,14 +2,15 @@ var argv = require('minimist')(process.argv.slice(2), { '--': true });
 var path = require('path');
 var rootDir = path.resolve(__dirname, '..');
 var split = require('split');
+var EnumBenchmarkType = require('./enum-benchmark-type');
 
 function readLog() {
 	var logToSummary = require('./log-to-summary');
 	var SummaryReader = require('./summary-reader');
-	var reader = new SummaryReader({
-		'benchmark-stats': require('./processor/stats'),
-		'benchmark-relative': require('./processor/relative')
-	}, rootDir);
+	var processors = {};
+	processors[EnumBenchmarkType.STATS] = require('./processor/stats');
+	processors[EnumBenchmarkType.RELATIVE] = require('./processor/relative');
+	var reader = new SummaryReader(processors, rootDir);
 
 	process.stdin
 		.pipe(split())

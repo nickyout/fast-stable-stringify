@@ -1,6 +1,7 @@
 // Benchmark example 'borrowed' from EventEmitter3 repo
 var Benchmark = require('benchmark');
 var assert = require("assert");
+var EnumBenchmarkType = require('../cli/enum-benchmark-type');
 
 var stringifiers = {
 	'native': JSON.stringify,
@@ -10,10 +11,17 @@ var stringifiers = {
 	'fast-stable-stringify': require('fast-stable-stringify')
 };
 
+var loggers = {};
+loggers[EnumBenchmarkType.RELATIVE] = benchToRelativeFormat;
+loggers[EnumBenchmarkType.STATS] = benchToStatsFormat;
+
 var data = require("../fixtures/index").input;
 var dataLength = JSON.stringify(data).length;
 
-function benchToDataSetV1(bench) {
+// swap to change logger
+var selectedBenchmarkType = EnumBenchmarkType.RELATIVE;
+
+function benchToStatsFormat(bench) {
 	return {
 		name: bench.name,
 		error: bench.error ? bench.error.message : '',
@@ -22,14 +30,14 @@ function benchToDataSetV1(bench) {
 	};
 }
 
-function benchToDataSetV2(fastestBench, bench) {
+function benchToRelativeFormat(bench, benchFastest) {
 	return {
 		name: bench.name,
 		error: bench.error ? bench.error.message : '',
 		hz: bench.hz,
-		fastest: fastestBench.compare(bench) === 0,
+		fastest: benchFastest.compare(bench) === 0,
 		rme: bench.stats.rme / 100,
-		rhz: bench.hz / fastestBench.hz
+		rhz: bench.hz / benchFastest.hz
 	};
 }
 
@@ -75,10 +83,10 @@ suite("Benchmark", function() {
 
 		benchmarkSuite
 			.map(function(bench) {
-				return benchToDataSetV2(benchFastest, bench);
+				return loggers[selectedBenchmarkType](bench, benchFastest);
 			})
 			.forEach(function(dataSet) {
-				console.log('type:json-benchmark-v2;' + JSON.stringify(dataSet));
+				console.log('type:'+selectedBenchmarkType+';' + JSON.stringify(dataSet));
 			});
 
 		console.log('fastest stable: ' + benchesFastestNames);

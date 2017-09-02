@@ -58,8 +58,7 @@ FileCache.prototype.flush = function() {
 		.map(function(filePath) {
 			return flushFile(fileCache, filePath);
 		});
-	return Promise.all(promises)
-		.then(function() { console.log('flushed')});
+	return Promise.all(promises);
 };
 
 

@@ -2,6 +2,7 @@ var fs = require('fs-extra');
 var table = require('markdown-table');
 var benchStatsToComparisonResult = require('./comparer/stats');
 var benchRelativeToComparisonResult = require('./comparer/relative');
+var EnumBenchmarkType = require('./enum-benchmark-type');
 
 /**
  * @typedef {Object} DataSetComparisonResult
@@ -27,14 +28,14 @@ function compareResults(files) {
 
 			// default
 			results = benchStatsToComparisonResult(arrFileObj.filter(function(fileObj) {
-				return !fileObj._metaData || fileObj._metaData.type === 'benchmark-stats';
+				return !fileObj._metaData || fileObj._metaData.type === EnumBenchmarkType.STATS;
 			}));
 
 			allResults = allResults.concat(results);
 
 			// relative
 			results = benchRelativeToComparisonResult(arrFileObj.filter(function(fileObj) {
-				return fileObj._metaData && fileObj._metaData.type === 'benchmark-relative';
+				return fileObj._metaData && fileObj._metaData.type === EnumBenchmarkType.RELATIVE;
 			}));
 
 			allResults = allResults.concat(results);

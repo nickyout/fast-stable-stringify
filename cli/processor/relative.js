@@ -37,9 +37,9 @@ function dateToPrettyString(date) {
  * BenchmarkRelativeProcessor
  * @implements SummaryProcessor
  */
-function BenchmarkRelativeProcessor(rootDir) {
+function BenchmarkRelativeProcessor(type, rootDir) {
 	this._rootDir = rootDir;
-	this._fileCache = new FileCache({ _metaData: { type: 'benchmark-relative' }});
+	this._fileCache = new FileCache({ _metaData: { type: type }});
 	this._filePath = path.join(rootDir, 'result', dateToPrettyString(new Date()) + '.json');
 }
 

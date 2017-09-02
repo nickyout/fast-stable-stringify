@@ -18,9 +18,9 @@ var getLibInfo = require('../util/get-lib-info');
  * BenchmarkStatsProcessor
  * @implements SummaryProcessor
  */
-function BenchmarkStatsProcessor(rootDir) {
+function BenchmarkStatsProcessor(type, rootDir) {
 	this._rootDir = rootDir;
-	this._fileCache = new FileCache({ _metaData: { type: 'benchmark-stats' }});
+	this._fileCache = new FileCache({ _metaData: { type: type }});
 }
 
 BenchmarkStatsProcessor.prototype.process = function process(browser, os, text) {
