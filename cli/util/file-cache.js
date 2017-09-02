@@ -14,11 +14,13 @@ function flushFile(fileCache, filePath) {
 		});
 }
 
-function FileCache() {
+function FileCache(baseObject) {
 	this._fileCache = {};
+	this._baseObject = baseObject || {};
 }
 
 FileCache.prototype.write = function(filePath, objectPathSegments, obj) {
+	var baseObject = this._baseObject;
 	var fileCache = this._fileCache;
 	var promise;
 
@@ -33,7 +35,8 @@ FileCache.prototype.write = function(filePath, objectPathSegments, obj) {
 				if (str) {
 					return JSON.parse(str);
 				} else {
-					return {};
+					// clone
+					return JSON.parse(JSON.stringify(baseObject));
 				}
 			})
 			.catch(function (err) {

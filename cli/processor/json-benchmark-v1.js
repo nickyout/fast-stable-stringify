@@ -20,7 +20,7 @@ var getLibInfo = require('../util/get-lib-info');
  */
 function JSONBenchmarkV1Processor(rootDir) {
 	this._rootDir = rootDir;
-	this._fileCache = new FileCache();
+	this._fileCache = new FileCache({ _metaData: { type: 'benchmark-stats' }});
 }
 
 JSONBenchmarkV1Processor.prototype.process = function process(browser, os, text) {

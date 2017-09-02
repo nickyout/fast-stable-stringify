@@ -2,63 +2,88 @@
 var Benchmark = require('benchmark');
 var assert = require("assert");
 
-var currentStringify = require('../index');
-var fastStableStringify = require('fast-stable-stringify');
-var substackStringify = require('json-stable-stringify');
-var fasterStableStringify = require('faster-stable-stringify');
+var stringifiers = {
+	'native': JSON.stringify,
+	'index': require('../index'),
+	'json-stable-stringify': require('json-stable-stringify'),
+	'faster-stable-stringify': require('faster-stable-stringify'),
+	'fast-stable-stringify': require('fast-stable-stringify')
+};
+
 var data = require("../fixtures/index").input;
 var dataLength = JSON.stringify(data).length;
 
+function benchToDataSetV1(bench) {
+	return {
+		name: bench.name,
+		error: bench.error ? bench.error.message : '',
+		hz: bench.hz,
+		stats: bench.stats
+	};
+}
+
+function benchToDataSetV2(fastestBench, bench) {
+	return {
+		name: bench.name,
+		error: bench.error ? bench.error.message : '',
+		hz: bench.hz,
+		fastest: fastestBench.compare(bench) === 0,
+		rme: bench.stats.rme / 100,
+		rhz: bench.hz / fastestBench.hz
+	};
+}
+
 // Paranoia, hopefully v8 will not perform some function loops away
 suite("Benchmark", function() {
-	var dataSets;
-	var fastestStable;
+	var benchmarkSuite;
 
 	function createTestCase(stringifyMethod) {
-		return function() {
-			var stringificationResult = stringifyMethod(data);
-			if (stringificationResult.length !== dataLength) {
-				throw new Error("Unexpected stringification result length");
+		return {
+			minSamples: 90,
+			fn: function () {
+				var stringificationResult = stringifyMethod(data);
+				if (stringificationResult.length !== dataLength) {
+					throw new Error("Unexpected stringification result length");
+				}
 			}
 		}
 	}
 
 	setup(function(done) {
-		dataSets = [];
-		this.timeout(40000);
-		(new Benchmark
-			.Suite('fastest', {
-				onCycle: function cycle(e) {
-					var bench = e.target;
-					console.log('Finished benchmarking: '+ bench);
-					dataSets.push({
-						name: bench.name,
-						error: bench.error ? bench.error.message : '',
-						hz: bench.hz,
-						stats: bench.stats
-					});
-				},
-				onComplete: function completed() {
-					fastestStable = this.filter(function(bench) {
-						// native is no competition, but this is for comparison purposes
-						return bench.name !== 'native' && !bench.error;
-					}).filter('fastest').pluck('name');
-					done();
-				}
-			}))
-			.add('index', createTestCase(currentStringify))
-			.add('json-stable-stringify', createTestCase(substackStringify))
-			.add('faster-stable-stringify', createTestCase(fasterStableStringify))
-			.add('fast-stable-stringify', createTestCase(fastStableStringify))
-			.add('native', createTestCase(JSON.stringify))
-			.run({ async: true });
+		var name;
+		benchmarkSuite = new Benchmark.Suite('fastest', {
+			onCycle: function cycle(e) {
+				console.log('Finished benchmarking: '+ e.target);
+			},
+			onComplete: function completed() {
+				done();
+			}
+		});
+		for (name in stringifiers) {
+			benchmarkSuite.add(name, createTestCase(stringifiers[name]));
+		}
+		benchmarkSuite.run({ async: true });
+		this.timeout(70000);
 	});
 	test("fastest stable", function() {
-		dataSets.forEach(function(dataSet) {
-			console.log('type:json-benchmark-v1;' + JSON.stringify(dataSet))
-		});
-		// should at least not be significantly slower
-		console.log('fastest stable: ' + fastestStable);
-		assert.ok(fastestStable.indexOf('index') !== -1);
+
+		var benchesFastest = benchmarkSuite
+			.filter(function(bench) { return bench.name != 'native'; })
+			.filter('fastest');
+		var benchesFastestNames = benchesFastest.pluck('name');
+		var benchFastest = benchesFastest[0];
+
+		benchmarkSuite
+			.map(function(bench) {
+				return benchToDataSetV2(benchFastest, bench);
+			})
+			.forEach(function(dataSet) {
+				console.log('type:json-benchmark-v2;' + JSON.stringify(dataSet));
+			});
+
+		console.log('fastest stable: ' + benchesFastestNames);
+
+		// index should at least not be significantly slower
+		assert.ok(benchesFastestNames.indexOf('index') !== -1);
 	})
 });

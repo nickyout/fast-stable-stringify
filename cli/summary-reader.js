@@ -3,27 +3,6 @@ var util = require('util');
 
 var summaryFormat = /^browser:([\w\s\.]+);os:([\w\s\.]+);(?:type:(.*);)?(.*)/;
 
-/**
- * @interface SummaryProcessor
- */
-
-/**
- * Process a single line
- * @function
- * @name SummaryProcessor#process
- * @param {string} browser
- * @param {string} os
- * @param {string} text
- * @returns {Promise}
- */
-
-/**
- * Done processing. Flush and stuff.
- * @function
- * @name SummaryProcessor#finish
- * @returns {Promise}
- */
-
 function SummaryReader(processors, rootDir) {
 	Transform.call(this);
 	this._rootDir = rootDir;
@@ -63,3 +42,25 @@ SummaryReader.prototype._flush = function() {
 };
 
 module.exports = SummaryReader;
+
+
+/**
+ * @interface SummaryProcessor
+ */
+
+/**
+ * Process a single line
+ * @function
+ * @name SummaryProcessor#process
+ * @param {string} browser
+ * @param {string} os
+ * @param {string} text
+ * @returns {Promise}
+ */
+
+/**
+ * Done processing. Flush and stuff.
+ * @function
+ * @name SummaryProcessor#finish
+ * @returns {Promise}
+ */
