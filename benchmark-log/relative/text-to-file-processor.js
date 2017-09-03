@@ -37,16 +37,15 @@ function dateToPrettyString(date) {
  * BenchmarkRelativeProcessor
  * @implements SummaryProcessor
  */
-function RelativeTextToFileProcessor(type, rootDir) {
-	this._rootDir = rootDir;
+function RelativeTextToFileProcessor(type, dest) {
+	this._dest = dest;
 	this._fileCache = new FileCache({ _metaData: { type: type }});
-	this._filePath = path.join(rootDir, 'result', dateToPrettyString(new Date()) + '.json');
 }
 
 RelativeTextToFileProcessor.prototype.process = function process(browser, os, text) {
-	var rootDir = this._rootDir;
+	var dest = this._dest;
 	var data = JSON.parse(text);
-	var info = getLibInfo(rootDir, data.name);
+	var info = getLibInfo(data.name);
 	var obj = {
 		name: info.name,
 		version: info.version,
@@ -62,7 +61,8 @@ RelativeTextToFileProcessor.prototype.process = function process(browser, os, te
 		}
 	};
 	var libFullName = obj.name + '@' + obj.version;
-	return this._fileCache.write(this._filePath, [browser, os, libFullName], obj);
+	var filePath = path.resolve(dest, browser + '.json');
+	return this._fileCache.write(filePath, [os, libFullName], obj);
 };
 
 RelativeTextToFileProcessor.prototype.finish = function finish() {

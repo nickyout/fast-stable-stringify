@@ -3,9 +3,9 @@ var util = require('util');
 
 var summaryFormat = /^browser:([\w\s\.]+);os:([\w\s\.]+);(?:type:(.*);)?(.*)/;
 
-function SummaryReader(processors, rootDir) {
+function SummaryReader(processors, dest) {
 	Transform.call(this);
-	this._rootDir = rootDir;
+	this._dest = dest;
 	this._processors = processors || {};
 	this._activeProcessors = {};
 }
@@ -22,7 +22,7 @@ SummaryReader.prototype._transform = function(chunk, encoding, callback) {
 		type = result[3];
 		if (allProcessors.hasOwnProperty(type)) {
 			if (!activeProcessors.hasOwnProperty(type)) {
-				activeProcessors[type] = new allProcessors[type](type, this._rootDir);
+				activeProcessors[type] = new allProcessors[type](type, this._dest);
 			}
 			activeProcessors[type].process(result[1], result[2], result[4]);
 		} else {
@@ -35,13 +35,13 @@ SummaryReader.prototype._transform = function(chunk, encoding, callback) {
 SummaryReader.prototype._flush = function() {
 	var activeProcessors = this._activeProcessors;
 	var promises = [];
-	process.stderr.write('flushing...');
+	process.stderr.write('flushing...\n');
 	for (var name in activeProcessors) {
 		promises.push(activeProcessors[name].finish());
 		delete activeProcessors[name];
 	}
 	Promise.all(promises).then(function() {
-		process.stderr.write('done (' + promises.length + ')\n');
+		process.stderr.write('flushing done');
 	});
 };
 

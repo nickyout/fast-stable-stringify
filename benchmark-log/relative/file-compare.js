@@ -1,32 +1,28 @@
 function fileObjToResult(fileObj) {
-	var browser;
-	var browserMap;
 	var os;
 	var osMap;
 	var lib;
 	var libData;
 	var resultMap;
 	var results = [];
-	for (browser in fileObj) {
-		if (browser !== '_metaData') {
-			browserMap = fileObj[browser];
-			for (os in browserMap) {
-				osMap = browserMap[os];
-				resultMap = {};
-				for (lib in osMap) {
-					libData = osMap[lib];
-					resultMap[lib] = {
-						hz: libData.result.hz,
-						rme: libData.result.rme,
-						rhz: libData.result.rhz,
-						fastest: libData.result.fastest,
-						succeeded: !libData.result.error
-					}
+	for (os in fileObj) {
+		if (os !== '_metaData') {
+			osMap = fileObj[os];
+			resultMap = {};
+			for (lib in osMap) {
+				libData = osMap[lib];
+				resultMap[lib] = {
+					hz: libData.result.hz,
+					rme: libData.result.rme,
+					rhz: libData.result.rhz,
+					fastest: libData.result.fastest,
+					succeeded: !libData.result.error
 				}
-				results.push({ browser: browser, os: os, resultMap: resultMap });
 			}
+			results.push({browser: libData.browser, os: libData.os, resultMap: resultMap});
 		}
 	}
+
 	return results;
 }
 

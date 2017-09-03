@@ -32,6 +32,7 @@
     "fast-stable-stringify": "git+https://github.com/nickyout/fast-stable-stringify.git#0.2.0",
     "faster-stable-stringify": "^1.0.0",
     "fs-extra": "^4.0.1",
+    "glob": "^7.1.2",
     "json-stable-stringify": "^1.0.0",
     "markdown-table": "^1.1.1",
     "minimist": "^1.2.0",

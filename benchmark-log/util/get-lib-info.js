@@ -1,11 +1,11 @@
 var getGitHashSync = require('./get-git-hash-sync');
 var path = require('path');
 
-module.exports = function(rootDir, libName) {
+module.exports = function(libName) {
 	var pkg;
 	var version;
 	if (libName == 'index') {
-		pkg = require(path.join(rootDir, 'package.json'));
+		pkg = require('../../package.json');
 		version = getGitHashSync(require.resolve('../../index'));
 	} else if (libName == 'native') {
 		pkg = { name: 'JSON.stringify', url: 'n/a' };

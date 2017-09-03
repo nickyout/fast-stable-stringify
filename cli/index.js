@@ -1,17 +1,17 @@
 var argv = require('minimist')(process.argv.slice(2));
 var path = require('path');
-var rootDir = path.resolve(__dirname, '..');
 var split = require('split');
 var EnumBenchmarkType = require('../benchmark-log/enum');
 var formatTable = require('./format-table');
+var glob = require('glob');
 
-function readLog() {
+function readLog(destDir) {
 	var logToSummary = require('./log-to-summary');
 	var SummaryReader = require('./summary-reader');
 	var processors = {};
 	processors[EnumBenchmarkType.STATS] = require('../benchmark-log/stats/text-to-file-processor');
 	processors[EnumBenchmarkType.RELATIVE] = require('../benchmark-log/relative/text-to-file-processor');
-	var reader = new SummaryReader(processors, rootDir);
+	var reader = new SummaryReader(processors, destDir);
 
 	process.stdin
 		.pipe(split())
@@ -20,38 +20,23 @@ function readLog() {
 }
 
 function compareResults(files) {
-	var fs;
 	var FileComparer = require('./file-comparer');
 	var processors = {};
 	processors[EnumBenchmarkType.RELATIVE] = require('../benchmark-log/relative/file-compare');
 	processors[EnumBenchmarkType.STATS] = require('../benchmark-log/stats/file-compare');
 	var comparer = new FileComparer(processors);
-	var resultsDir;
-	var actualFiles;
-
-	if (files.length) {
-		return comparer.compare(files);
-	} else {
-		fs = require('fs');
-		resultsDir = path.resolve(rootDir, 'result');
-		return new Promise(function(resolve) {
-			fs.readdir(resultsDir, function(err, dirFiles) {
-				actualFiles = dirFiles
-					.map(function(file) {
-						return path.resolve(resultsDir, file);
-					});
-				resolve(comparer.compare(actualFiles));
-			});
-		});
-	}
+	return comparer.compare(files);
 }
 
 switch (argv._[0]) {
+
 	case "read":
-		readLog();
+		readLog(argv._[1] || path.resolve(process.cwd(), 'result'));
 		break;
+
 	case "table":
-		compareResults(argv._.slice(1))
+		var fileList = glob.sync(argv._.slice(1).join('|') || 'result/*.json', { nodir: true });
+		compareResults(fileList)
 			.then(function(comparisonResult) {
 				return formatTable(comparisonResult, { hideColumns: ['JSON.stringify@native'] })
 			})

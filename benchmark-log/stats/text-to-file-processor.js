@@ -18,15 +18,15 @@ var getLibInfo = require('../util/get-lib-info');
  * BenchmarkStatsProcessor
  * @implements SummaryProcessor
  */
-function StatsTextToFileProcessor(type, rootDir) {
-	this._rootDir = rootDir;
+function StatsTextToFileProcessor(type, dest) {
+	this._dest = dest;
 	this._fileCache = new FileCache({ _metaData: { type: type }});
 }
 
 StatsTextToFileProcessor.prototype.process = function process(browser, os, text) {
-	var rootDir = this._rootDir;
+	var destDir = this._dest;
 	var data = JSON.parse(text);
-	var info = getLibInfo(rootDir, data.name);
+	var info = getLibInfo(data.name);
 	var obj = {
 		name: info.name,
 		version: info.version,
@@ -38,7 +38,7 @@ StatsTextToFileProcessor.prototype.process = function process(browser, os, text)
 		stats: data.stats
 	};
 	var filename = obj.name + '-' + obj.version + '.json';
-	var filepath = path.join(rootDir, 'result', filename);
+	var filepath = path.join(destDir, 'result', filename);
 	return this._fileCache.write(filepath, [browser, os], obj);
 };
 
