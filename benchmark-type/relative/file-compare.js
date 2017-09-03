@@ -35,7 +35,7 @@ function fileObjToResult(fileObj) {
  * @param {Array} arrFileObj
  * @returns {DataSetComparisonResult[]}
  */
-module.exports = function(arrFileObj) {
+module.exports = function relativeFileCompare(arrFileObj) {
 	return arrFileObj.reduce(function(results, fileObj) {
 		return results.concat(fileObjToResult(fileObj));
 	}, []);

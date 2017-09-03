@@ -112,7 +112,7 @@ function groupDataSetsByBrowserAndOS(jsonBenchObjects) {
  * @param {JSONBenchmarkObject[]} arrFileContent
  * @returns {DataSetComparisonResult[]}
  */
-module.exports = function(arrFileContent) {
+module.exports = function statsFileCompare(arrFileContent) {
 	return groupDataSetsByBrowserAndOS(arrFileContent)
 		.map(createDataSetComparisonResult);
 };

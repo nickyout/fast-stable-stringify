@@ -1,7 +1,9 @@
 // Benchmark example 'borrowed' from EventEmitter3 repo
 var Benchmark = require('benchmark');
 var assert = require("assert");
-var EnumBenchmarkType = require('../cli/enum-benchmark-type');
+var EnumBenchmarkType = require('../benchmark-type/enum');
+var relativeBenchToLog = require('../benchmark-type/relative/bench-to-text');
+var statsBenchToLog = require('../benchmark-type/stats/bench-to-text');
 
 var stringifiers = {
 	'native': JSON.stringify,
@@ -12,34 +14,14 @@ var stringifiers = {
 };
 
 var loggers = {};
-loggers[EnumBenchmarkType.RELATIVE] = benchToRelativeFormat;
-loggers[EnumBenchmarkType.STATS] = benchToStatsFormat;
+loggers[EnumBenchmarkType.RELATIVE] = relativeBenchToLog;
+loggers[EnumBenchmarkType.STATS] = statsBenchToLog;
 
 var data = require("../fixtures/index").input;
 var dataLength = JSON.stringify(data).length;
 
 // swap to change logger
 var selectedBenchmarkType = EnumBenchmarkType.RELATIVE;
-
-function benchToStatsFormat(bench) {
-	return {
-		name: bench.name,
-		error: bench.error ? bench.error.message : '',
-		hz: bench.hz,
-		stats: bench.stats
-	};
-}
-
-function benchToRelativeFormat(bench, benchFastest) {
-	return {
-		name: bench.name,
-		error: bench.error ? bench.error.message : '',
-		hz: bench.hz,
-		fastest: benchFastest.compare(bench) === 0,
-		rme: bench.stats.rme / 100,
-		rhz: bench.hz / benchFastest.hz
-	};
-}
 
 // Paranoia, hopefully v8 will not perform some function loops away
 suite("Benchmark", function() {
@@ -85,8 +67,8 @@ suite("Benchmark", function() {
 			.map(function(bench) {
 				return loggers[selectedBenchmarkType](bench, benchFastest);
 			})
-			.forEach(function(dataSet) {
-				console.log('type:'+selectedBenchmarkType+';' + JSON.stringify(dataSet));
+			.forEach(function(text) {
+				console.log('type:'+selectedBenchmarkType+';' + text);
 			});
 
 		console.log('fastest stable: ' + benchesFastestNames);

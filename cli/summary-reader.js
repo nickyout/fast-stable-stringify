@@ -41,7 +41,7 @@ SummaryReader.prototype._flush = function() {
 		delete activeProcessors[name];
 	}
 	Promise.all(promises).then(function() {
-		process.stderr.write('done (' + promises.length + ')');
+		process.stderr.write('done (' + promises.length + ')\n');
 	});
 };
 
