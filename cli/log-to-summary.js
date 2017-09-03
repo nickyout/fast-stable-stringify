@@ -35,6 +35,8 @@ module.exports = new Transform({
 			currentHeader = data.value;
 		} else if (data.type == "line" && currentHeader) {
 			this.push(currentHeader + data.value);
+		} else {
+			process.stderr.write('.');
 		}
 		this._ch = currentHeader;
 		callback();

@@ -17,6 +17,7 @@ function readLog(destDir) {
 		.pipe(split())
 		.pipe(logToSummary)
 		.pipe(reader);
+	process.stderr.write('reading stdin\n');
 }
 
 function compareResults(files) {
@@ -35,7 +36,7 @@ switch (argv._[0]) {
 		break;
 
 	case "table":
-		var fileList = glob.sync(argv._.slice(1).join('|') || 'result/*.json', { nodir: true });
+		var fileList = glob.sync('{' + argv._.slice(1).join(',') + '}' || 'result/*.json', { nodir: true });
 		compareResults(fileList)
 			.then(function(comparisonResult) {
 				return formatTable(comparisonResult, { hideColumns: ['JSON.stringify@native'] })

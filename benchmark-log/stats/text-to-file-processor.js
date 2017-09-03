@@ -43,7 +43,7 @@ StatsTextToFileProcessor.prototype.process = function process(browser, os, text)
 };
 
 StatsTextToFileProcessor.prototype.finish = function finish() {
-	this._fileCache.flush();
+	return this._fileCache.flush();
 };
 
 module.exports = StatsTextToFileProcessor;

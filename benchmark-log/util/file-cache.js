@@ -7,7 +7,7 @@ function flushFile(fileCache, filePath) {
 	delete fileCache[filePath];
 	return promise
 		.then(function(root) {
-			process.stderr.write('writing to file ' + filePath + '\n');
+			process.stderr.write('\nwriting to file ' + filePath);
 			return fs.writeFile(filePath, JSON.stringify(root, null, 4));
 		})
 		.catch(function(err) {

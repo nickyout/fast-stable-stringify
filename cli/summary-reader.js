@@ -24,9 +24,10 @@ SummaryReader.prototype._transform = function(chunk, encoding, callback) {
 			if (!activeProcessors.hasOwnProperty(type)) {
 				activeProcessors[type] = new allProcessors[type](type, this._dest);
 			}
+			process.stderr.write('\nfeed: ' + (result[4] || '').length + ' chars to ' + type);
 			activeProcessors[type].process(result[1], result[2], result[4]);
 		} else {
-			process.stderr.write('Omitting line: ' + line + '\n');
+			process.stderr.write('\nomit: ' + line);
 		}
 	}
 	callback();
@@ -35,13 +36,16 @@ SummaryReader.prototype._transform = function(chunk, encoding, callback) {
 SummaryReader.prototype._flush = function() {
 	var activeProcessors = this._activeProcessors;
 	var promises = [];
-	process.stderr.write('flushing...\n');
+	process.stderr.write('\nflush: start');
 	for (var name in activeProcessors) {
+		process.stderr.write('\nflush: '+name);
 		promises.push(activeProcessors[name].finish());
 		delete activeProcessors[name];
 	}
 	Promise.all(promises).then(function() {
-		process.stderr.write('flushing done');
+		process.stderr.write('\nflush: done');
+		// end
+		process.stderr.write('\nend of stdin\n');
 	});
 };
 

@@ -66,7 +66,7 @@ RelativeTextToFileProcessor.prototype.process = function process(browser, os, te
 };
 
 RelativeTextToFileProcessor.prototype.finish = function finish() {
-	this._fileCache.flush();
+	return this._fileCache.flush();
 };
 
 module.exports = RelativeTextToFileProcessor;
