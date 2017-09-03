@@ -2,15 +2,15 @@ var argv = require('minimist')(process.argv.slice(2));
 var path = require('path');
 var rootDir = path.resolve(__dirname, '..');
 var split = require('split');
-var EnumBenchmarkType = require('./../benchmark-type/enum');
+var EnumBenchmarkType = require('../benchmark-log/enum');
 var formatTable = require('./format-table');
 
 function readLog() {
 	var logToSummary = require('./log-to-summary');
 	var SummaryReader = require('./summary-reader');
 	var processors = {};
-	processors[EnumBenchmarkType.STATS] = require('./../benchmark-type/stats/text-to-file');
-	processors[EnumBenchmarkType.RELATIVE] = require('./../benchmark-type/relative/text-to-file');
+	processors[EnumBenchmarkType.STATS] = require('../benchmark-log/stats/text-to-file-processor');
+	processors[EnumBenchmarkType.RELATIVE] = require('../benchmark-log/relative/text-to-file-processor');
 	var reader = new SummaryReader(processors, rootDir);
 
 	process.stdin
@@ -21,10 +21,10 @@ function readLog() {
 
 function compareResults(files) {
 	var fs;
-	var FileComparer = require('./compare-results');
+	var FileComparer = require('./file-comparer');
 	var processors = {};
-	processors[EnumBenchmarkType.RELATIVE] = require('../benchmark-type/relative/file-compare');
-	processors[EnumBenchmarkType.STATS] = require('../benchmark-type/stats/file-compare');
+	processors[EnumBenchmarkType.RELATIVE] = require('../benchmark-log/relative/file-compare');
+	processors[EnumBenchmarkType.STATS] = require('../benchmark-log/stats/file-compare');
 	var comparer = new FileComparer(processors);
 	var resultsDir;
 	var actualFiles;

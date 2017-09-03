@@ -1,9 +1,9 @@
 // Benchmark example 'borrowed' from EventEmitter3 repo
 var Benchmark = require('benchmark');
 var assert = require("assert");
-var EnumBenchmarkType = require('../benchmark-type/enum');
-var relativeBenchToLog = require('../benchmark-type/relative/bench-to-text');
-var statsBenchToLog = require('../benchmark-type/stats/bench-to-text');
+var EnumBenchmarkType = require('../benchmark-log/enum');
+var relativeBenchToLog = require('../benchmark-log/relative/bench-to-text');
+var statsBenchToLog = require('../benchmark-log/stats/bench-to-text');
 
 var stringifiers = {
 	'native': JSON.stringify,

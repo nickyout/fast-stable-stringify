@@ -1,6 +1,6 @@
 var path = require('path');
-var FileCache = require('../../cli/util/file-cache');
-var getLibInfo = require('../../cli/util/get-lib-info');
+var FileCache = require('../util/file-cache');
+var getLibInfo = require('../util/get-lib-info');
 
 /**
  * @typedef {Object} JSONBenchmarkObject
@@ -18,12 +18,12 @@ var getLibInfo = require('../../cli/util/get-lib-info');
  * BenchmarkStatsProcessor
  * @implements SummaryProcessor
  */
-function StatsLogToFileProcessor(type, rootDir) {
+function StatsTextToFileProcessor(type, rootDir) {
 	this._rootDir = rootDir;
 	this._fileCache = new FileCache({ _metaData: { type: type }});
 }
 
-StatsLogToFileProcessor.prototype.process = function process(browser, os, text) {
+StatsTextToFileProcessor.prototype.process = function process(browser, os, text) {
 	var rootDir = this._rootDir;
 	var data = JSON.parse(text);
 	var info = getLibInfo(rootDir, data.name);
@@ -42,8 +42,8 @@ StatsLogToFileProcessor.prototype.process = function process(browser, os, text) 
 	return this._fileCache.write(filepath, [browser, os], obj);
 };
 
-StatsLogToFileProcessor.prototype.finish = function finish() {
+StatsTextToFileProcessor.prototype.finish = function finish() {
 	this._fileCache.flush();
 };
 
-module.exports = StatsLogToFileProcessor;
+module.exports = StatsTextToFileProcessor;

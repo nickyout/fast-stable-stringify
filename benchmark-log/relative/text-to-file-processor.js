@@ -1,6 +1,6 @@
 var path = require('path');
-var FileCache = require('../../cli/util/file-cache');
-var getLibInfo = require('../../cli/util/get-lib-info');
+var FileCache = require('../util/file-cache');
+var getLibInfo = require('../util/get-lib-info');
 
 function dateToPrettyString(date) {
 	return [
@@ -37,13 +37,13 @@ function dateToPrettyString(date) {
  * BenchmarkRelativeProcessor
  * @implements SummaryProcessor
  */
-function RelativeLogToFileProcessor(type, rootDir) {
+function RelativeTextToFileProcessor(type, rootDir) {
 	this._rootDir = rootDir;
 	this._fileCache = new FileCache({ _metaData: { type: type }});
 	this._filePath = path.join(rootDir, 'result', dateToPrettyString(new Date()) + '.json');
 }
 
-RelativeLogToFileProcessor.prototype.process = function process(browser, os, text) {
+RelativeTextToFileProcessor.prototype.process = function process(browser, os, text) {
 	var rootDir = this._rootDir;
 	var data = JSON.parse(text);
 	var info = getLibInfo(rootDir, data.name);
@@ -65,9 +65,9 @@ RelativeLogToFileProcessor.prototype.process = function process(browser, os, tex
 	return this._fileCache.write(this._filePath, [browser, os, libFullName], obj);
 };
 
-RelativeLogToFileProcessor.prototype.finish = function finish() {
+RelativeTextToFileProcessor.prototype.finish = function finish() {
 	this._fileCache.flush();
 };
 
-module.exports = RelativeLogToFileProcessor;
+module.exports = RelativeTextToFileProcessor;
 

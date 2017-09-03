@@ -1,4 +1,4 @@
-module.exports = function benchToRelativeLog(bench, benchFastest) {
+module.exports = function benchToRelativeText(bench, benchFastest) {
 	return JSON.stringify({
 		name: bench.name,
 		error: bench.error ? bench.error.message : '',

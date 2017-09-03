@@ -1,4 +1,4 @@
-module.exports = function benchToStatsLog(bench) {
+module.exports = function benchToStatsText(bench) {
 	return JSON.stringify({
 		name: bench.name,
 		error: bench.error ? bench.error.message : '',
