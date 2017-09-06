@@ -16,8 +16,8 @@ function toFixedWidth(value, maxChars) {
  */
 function createTable(results, options) {
 	options || (options = {});
-	var columnAlign = ['l', 'l'];
-	var header = ['Browser', 'OS' ];
+	var columnAlign = ['l'];
+	var header = ['Browser'];
 	var libNames = [];
 	var rows = [];
 	var errorCell = 'X';
@@ -42,7 +42,7 @@ function createTable(results, options) {
 		libResults = libNames.map(function(libName) {
 			result = resultMap[libName];
 			if (result) {
-				if (result.succeeded) {
+				if (result.success) {
 					return (result.fastest ? '*' : '')
 						+ (100 * result.rhz).toFixed(2) + '% '
 						+ '(\xb1' + toFixedWidth(100 * result.rhz * result.rme, 4) + '%)';
@@ -54,7 +54,7 @@ function createTable(results, options) {
 			}
 		});
 
-		rows.push([comparisonResult.browser, comparisonResult.os].concat(libResults));
+		rows.push([comparisonResult.browser].concat(libResults));
 	});
 
 	// slap header before it
