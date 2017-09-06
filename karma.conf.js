@@ -25,7 +25,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-			'test/fastest.js'
+			'test/index.js'
     ],
 
 
@@ -51,7 +51,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'test/fastest.js': ['webpack']
+      'test/index.js': ['webpack']
     },
 
 
@@ -61,8 +61,12 @@ module.exports = function(config) {
     reporters: ['benchmark'],
     
     benchmarkReporter: {
-        destDir: 'results',
-        exclude: ['native']
+			destDir: 'results',
+			exclude: ['native'],
+			resolveName: function(libName) {
+				var libInfo = require('./benchmark-log/util/get-lib-info')(libName);
+				return libInfo.name + '@' + libInfo.version;
+			}
     },
 
     // web server port

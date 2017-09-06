@@ -35,7 +35,6 @@ module.exports = function(files) {
 			return fs.readJson(file);
 		}))
 		.then(function (arrFileObj) {
-			console.log(arrFileObj);
 			var result = mergeToMap(arrFileObj);
 			return Object.keys(result).map(function(key) {
 				return {browser: key, resultMap: result[key] }
