@@ -6,7 +6,7 @@ var fastStableStringify = require('fast-stable-stringify');
 
 var data = require("../fixtures/index").input;
 var dataLength = JSON.stringify(data).length;
-var eachRecursive = require('./util/eachRecursive');
+var eachRecursive = require('../util/eachRecursive');
 
 function isValid(input, myStringify, theirStringify) {
 	var numComparisons = 0;

@@ -64,7 +64,7 @@ module.exports = function(config) {
 			destDir: 'results',
 			exclude: ['native'],
 			resolveName: function(libName) {
-				var libInfo = require('./benchmark-log/util/get-lib-info')(libName);
+				var libInfo = require('./util/get-lib-info')(libName);
 				return libInfo.name + '@' + libInfo.version;
 			}
     },
