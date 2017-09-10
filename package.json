@@ -27,7 +27,6 @@
   },
   "homepage": "https://github.com/nickyout/fast-stable-stringify#readme",
   "devDependencies": {
-    "benchmark": "^1.0.0",
     "fast-stable-stringify": "git+https://github.com/nickyout/fast-stable-stringify.git#0.2.0",
     "faster-stable-stringify": "^1.0.0",
     "fs-extra": "^4.0.1",
@@ -35,7 +34,7 @@
     "json-stable-stringify": "^1.0.0",
     "karma": "^1.7.1",
     "karma-benchmark": "^0.7.1",
-    "karma-benchmark-reporter": "git+https://github.com/nickyout/karma-benchmark-reporter.git#e6c1380",
+    "karma-benchmark-reporter": "git+https://github.com/nickyout/karma-benchmark-reporter.git#502a17f",
     "karma-mocha": "^1.3.0",
     "karma-sauce-launcher": "^1.2.0",
     "karma-webpack": "^2.0.4",
@@ -44,9 +43,5 @@
     "mocha": "^2.2.5",
     "split": "^1.0.1",
     "webpack": "^3.5.5"
-  },
-  "dependencies": {
-    "benchmark": "^1.0.0",
-    "detect-browser": "^1.9.0"
   }
 }

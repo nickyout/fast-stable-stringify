@@ -21,6 +21,8 @@ function isValid(input, myStringify, theirStringify) {
 
 suite("Benchmark", function() {
 
+	var minSamples = 120;
+
 	// This needs to be true before anything else
 	console.log('Checking index validity...');
 	isValid(data, indexStringify, jsonStableStringify);
@@ -29,25 +31,25 @@ suite("Benchmark", function() {
 	benchmark('index', function () {
 		var result = indexStringify(data);
 		assert.equal(result.length, dataLength);
-	});
+	}, { minSamples: minSamples });
 
 	benchmark('native', function () {
 		var result = JSON.stringify(data);
 		assert.equal(result.length, dataLength);
-	});
+	}, { minSamples: minSamples });
 
 	benchmark('json-stable-stringify', function () {
 		var result = jsonStableStringify(data);
 		assert.equal(result.length, dataLength);
-	});
+	}, { minSamples: minSamples });
 
 	benchmark('faster-stable-stringify', function () {
 		var result = fasterStableStringify(data);
 		assert.equal(result.length, dataLength);
-	});
+	}, { minSamples: minSamples });
 
 	benchmark('fast-stable-stringify', function () {
 		var result = fastStableStringify(data);
 		assert.equal(result.length, dataLength);
-	});
+	}, { minSamples: minSamples });
 });

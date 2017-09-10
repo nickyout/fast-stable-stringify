@@ -66,7 +66,8 @@ module.exports = function(config) {
 			resolveName: function(libName) {
 				var libInfo = require('./util/get-lib-info')(libName);
 				return libInfo.name + '@' + libInfo.version;
-			}
+			},
+            logStyle: 'benchmark'
     },
 
     // web server port
@@ -90,7 +91,7 @@ module.exports = function(config) {
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
     //customLaunchers: customLaunchers,
     //browsers: Object.keys(customLaunchers),
-    browsers: ['Chrome'],
+		browsers: ['Chrome'],
 
 		browserNoActivityTimeout: 60000,
 
