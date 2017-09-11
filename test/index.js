@@ -33,6 +33,7 @@ suite("Benchmark", function() {
 		assert.equal(result.length, dataLength);
 	}, { minSamples: minSamples });
 
+	/*
 	benchmark('native', function () {
 		var result = JSON.stringify(data);
 		assert.equal(result.length, dataLength);
@@ -47,9 +48,20 @@ suite("Benchmark", function() {
 		var result = fasterStableStringify(data);
 		assert.equal(result.length, dataLength);
 	}, { minSamples: minSamples });
+	*/
 
 	benchmark('fast-stable-stringify', function () {
 		var result = fastStableStringify(data);
 		assert.equal(result.length, dataLength);
 	}, { minSamples: minSamples });
+}, {
+	onComplete: function() {
+		var namesFastest = this
+			.filter(function(bench) {
+				return bench.name !== 'native';
+			})
+			.filter('fastest')
+			.map('name');
+		assert.notEqual(namesFastest.indexOf('index'), -1, "index should be among the fastest");
+	}
 });

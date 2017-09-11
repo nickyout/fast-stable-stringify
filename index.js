@@ -1,51 +1,42 @@
-var toString = {}.toString,
-	isArray = Array.isArray || function(obj){
+var toString = {}.toString;
+var isArray = Array.isArray || function(obj){
 		return toString.call(obj) === "[object Array]";
-	},
-	objKeys = Object.keys || function(obj) {
-			var keys = [];
-			for (var name in obj) {
-				if (obj[name] !== undefined) {
-					keys.push(name);
-				}
+	};
+var objKeys = Object.keys || function(obj) {
+		var keys = [];
+		for (var name in obj) {
+			if (obj[name] !== undefined) {
+				keys.push(name);
 			}
-			return keys;
-		},
-	strReg = /[\u0000-\u001f"\\]/g,
-	strReplace = function(str) {
-		var code = str.charCodeAt(0);
-		switch (code) {
-			case 34: return '\\"';
-			case 92: return '\\\\';
-			case 12: return "\\f";
-			case 10: return "\\n";
-			case 13: return "\\r";
-			case 9: return "\\t";
-			case 8: return "\\b";
-			default:
-				if (code > 15) {
-					return "\\u00" + code.toString(16);
-				} else {
-					return "\\u000" + code.toString(16);
-				}
 		}
+		return keys;
 	};
 
-/**
- * Simple stable stringify. Object keys sorted. No options, no spaces.
- * @param {*} val
- * @returns {string}
- */
-module.exports = function simpleStableStringify(val) {
-	if (val !== undefined) {
-		return ''+ sss(val);
+function strEscape(str){
+	var length = str.length,
+		buffer = '',
+		code = 0,
+		i = 0;
+
+	for (; i < length; i++) {
+		code = str.charCodeAt(i);
+
+		if (code === 34) buffer += '\\"';
+		else if (code === 92) buffer += '\\\\';
+		else if (code > 31) buffer += String.fromCharCode(code);
+		else if (code > 15) buffer += "\\u00" + code.toString(16);
+		else if (code === 12) buffer += "\\f";
+		else if (code === 10) buffer += "\\n";
+		else if (code === 13) buffer += "\\r";
+		else if (code === 9) buffer += "\\t";
+		else if (code === 8) buffer += "\\b";
+		else buffer += "\\u000" + code.toString(16);
 	}
-};
 
-module.exports.stringSearch = strReg;
-module.exports.stringReplace = strReplace;
+	return buffer;
+}
 
-function sss(val) {
+function stringifyReg(val) {
 	var i, max, str, keys, key;
 	switch (typeof val) {
 		case "object":
@@ -55,10 +46,10 @@ function sss(val) {
 				str = '[';
 				max = val.length - 1;
 				for (i = 0; i < max; i++) {
-					str += sss(val[i]) + ',';
+					str += stringifyReg(val[i]) + ',';
 				}
 				if (max > -1) {
-					str += sss(val[i]);
+					str += stringifyReg(val[i]);
 				}
 				return str + ']';
 			} else {
@@ -73,7 +64,7 @@ function sss(val) {
 						if (str) {
 							str += ',';
 						}
-						str += '"' + key.replace(strReg, strReplace) + '":' + sss(val[key]);
+						str += '"' + strEscape(key) + '":' + stringifyReg(val[key]);
 					}
 					i++;
 				}
@@ -82,8 +73,14 @@ function sss(val) {
 		case "undefined":
 			return null;
 		case "string":
-			return '"' + val.replace(strReg, strReplace) + '"';
+			return '"' + strEscape(val) + '"';
 		default:
 			return val;
 	}
 }
+
+module.exports = function(val) {
+	if (val !== undefined) {
+		return ''+ stringifyReg(val);
+	}
+};
