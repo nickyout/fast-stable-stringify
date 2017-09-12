@@ -35,6 +35,7 @@
     "karma": "^1.7.1",
     "karma-benchmark": "^0.7.1",
     "karma-benchmark-reporter": "git+https://github.com/nickyout/karma-benchmark-reporter.git#502a17f",
+    "karma-firefox-launcher": "^1.0.1",
     "karma-mocha": "^1.3.0",
     "karma-sauce-launcher": "^1.2.0",
     "karma-webpack": "^2.0.4",

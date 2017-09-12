@@ -19,7 +19,7 @@ function isValid(input, myStringify, theirStringify) {
 	assert.equal(numComparisons, 606);
 }
 
-suite("Benchmark", function() {
+suite("libs", function() {
 
 	var minSamples = 120;
 

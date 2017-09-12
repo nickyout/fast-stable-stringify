@@ -12,7 +12,7 @@ function mergeToMap(arrFileObj) {
 		var libData;
 		for (name in fileObj) {
 			libData = fileObj[name];
-			obj.setObject(result, [libData.browser, libData.name], libData);
+			obj.setObject(result, [libData.suite, libData.browser, libData.name], libData);
 		}
 		return result;
 	}, {});
@@ -21,6 +21,7 @@ function mergeToMap(arrFileObj) {
 /**
  * @typedef {Object} DataSetComparisonResult
  * @prop {string} browser
+ * @prop {string} suite
  * @prop {Object<DataSetComparisonResultItem>} resultMap - key is libName
  */
 
@@ -35,9 +36,17 @@ module.exports = function(files) {
 			return fs.readJson(file);
 		}))
 		.then(function (arrFileObj) {
-			var result = mergeToMap(arrFileObj);
-			return Object.keys(result).map(function(key) {
-				return {browser: key, resultMap: result[key] }
-			});
+			var map = mergeToMap(arrFileObj);
+			var result = [];
+			var suiteName;
+			var browserName;
+			var suite;
+			for (suiteName in map) {
+				suite = map[suiteName];
+				for (browserName in suite) {
+					result.push({ browser: browserName, suite: suiteName, resultMap: suite[browserName]})
+				}
+			}
+			return result;
 		});
 };
