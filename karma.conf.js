@@ -73,10 +73,13 @@ module.exports = function(config) {
     benchmarkReporter: {
 			destDir: 'results',
 			exclude: ['native'],
-			resolveName: function(libName) {
-				return libName;
-				var libInfo = require('./util/get-lib-info')(libName);
-				return libInfo.name + '@' + libInfo.version;
+			resolveName: function(benchName, suiteName) {
+                if (suiteName == 'libs') {
+                    var libInfo = require('./util/get-lib-info')(libName);
+                    return libInfo.name + '@' + libInfo.version;
+                } else {
+                    return benchName;
+                }
 			},
 			logStyle: 'benchmark'
     },
@@ -104,7 +107,7 @@ module.exports = function(config) {
     //browsers: Object.keys(customLaunchers),
 		browsers: ['Chrome', 'Firefox'],
 
-		browserNoActivityTimeout: 60000,
+		browserNoActivityTimeout: 72000,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
