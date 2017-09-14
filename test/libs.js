@@ -4,20 +4,10 @@ var jsonStableStringify = require('json-stable-stringify');
 var fasterStableStringify = require('faster-stable-stringify');
 var fastStableStringify = require('fast-stable-stringify');
 
+var validateLibOutput = require('./validate');
+
 var data = require("../fixtures/index").input;
 var dataLength = JSON.stringify(data).length;
-var eachRecursive = require('../util/eachRecursive');
-
-function isValid(input, myStringify, theirStringify) {
-	var numComparisons = 0;
-	eachRecursive(input, function (val, path) {
-		var mine = myStringify(val);
-		var expectedVal = theirStringify(val);
-		assert.equal(mine, expectedVal);
-		numComparisons++;
-	});
-	assert.equal(numComparisons, 606);
-}
 
 suite("libs", function() {
 
@@ -25,7 +15,7 @@ suite("libs", function() {
 
 	// This needs to be true before anything else
 	console.log('Checking index validity...');
-	isValid(data, indexStringify, jsonStableStringify);
+	validateLibOutput(indexStringify);
 	console.log('Checking index validity success');
 
 	benchmark('index', function () {

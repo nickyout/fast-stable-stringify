@@ -1,7 +1,5 @@
 module.exports = {
-	input: [
-		require('./final-boss.json'),
-		require('./final-boss-undefined')
-	]/*,
+	input: require('./input-data-types')
+	/*,
 	expected: require("./expected.json")*/
 };
