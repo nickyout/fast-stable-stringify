@@ -7,8 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "test-browsers": "zuul -- test/index.js",
-    "test": "node ./node_modules/.bin/mocha --ui tdd test/index"
+    "test": "./node_modules/.bin/karma start",
+    "travis": "./node_modules/.bin/karma start ./karma.conf.travis.js",
+    "table": "node ./cli/index.js results/libs/*.json"
   },
   "repository": {
     "type": "git",
@@ -22,17 +23,25 @@
     "fast"
   ],
   "author": "Nicky Out",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nickyout/fast-stable-stringify/issues"
   },
   "homepage": "https://github.com/nickyout/fast-stable-stringify#readme",
   "devDependencies": {
-    "benchmark": "^1.0.0",
-    "devnull": "0.0.12",
+    "faster-stable-stringify": "^1.0.0",
+    "fs-extra": "^4.0.1",
+    "glob": "^7.1.2",
     "json-stable-stringify": "^1.0.0",
-    "mocha": "^2.2.5",
-    "tiny-sprintf": "^0.3.0"
-  },
-  "dependencies": {}
+    "karma": "^1.7.1",
+    "karma-benchmark": "^0.7.1",
+    "karma-benchmark-reporter": "git+https://github.com/nickyout/karma-benchmark-reporter.git#4b570c9",
+    "karma-firefox-launcher": "^1.0.1",
+    "karma-sauce-launcher": "^1.2.0",
+    "karma-webpack": "^2.0.4",
+    "markdown-table": "^1.1.1",
+    "minimist": "^1.2.0",
+    "split": "^1.0.1",
+    "webpack": "^3.5.5"
+  }
 }
