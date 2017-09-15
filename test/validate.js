@@ -20,5 +20,5 @@ module.exports = function validateLibOutput(stringify) {
 		assert.equal(mine, expectedVal);
 		numComparisons++;
 	});
-	assert.equal(numComparisons, 563);
+	assert.equal(numComparisons, 569);
 };

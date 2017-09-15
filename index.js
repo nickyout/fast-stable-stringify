@@ -20,7 +20,7 @@ function stringify(val, isArrayProp) {
 			if (val === null) {
 				return null;
 			} else if (val.toJSON && typeof val.toJSON === "function") {
-				return JSON.stringify(val);
+				return stringify(val.toJSON(), isArrayProp);
 			} else {
 				toStr = objToString.call(val);
 				if (toStr === "[object Array]") {
@@ -61,7 +61,7 @@ function stringify(val, isArrayProp) {
 		case "string":
 			return JSON.stringify(val);
 		default:
-			return val;
+			return isFinite(val) ? val : null;
 	}
 }
 

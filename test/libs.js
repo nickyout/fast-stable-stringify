@@ -18,6 +18,13 @@ suite("libs", function() {
 	validateLibOutput(indexStringify);
 	console.log('Checking index validity success');
 
+	benchmark('native', function () {
+		var result = JSON.stringify(data);
+		assert.equal(result.length, dataLength);
+	}, {
+		minSamples: minSamples
+	});
+
 	benchmark('index', function () {
 		var result = indexStringify(data);
 		assert.equal(result.length, dataLength);
@@ -27,13 +34,6 @@ suite("libs", function() {
 
 	benchmark('json-stable-stringify', function () {
 		var result = jsonStableStringify(data);
-		assert.equal(result.length, dataLength);
-	}, {
-		minSamples: minSamples
-	});
-
-	benchmark('native', function () {
-		var result = JSON.stringify(data);
 		assert.equal(result.length, dataLength);
 	}, {
 		minSamples: minSamples

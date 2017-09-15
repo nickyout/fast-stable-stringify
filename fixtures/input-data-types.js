@@ -55,7 +55,10 @@ module.exports = {
 			"MAX_VALUE": 1.7976931348623157e+308,
 			"MIN_VALUE": 5e-324,
 			"NEGATIVE_MAX_VALUE": -1.7976931348623157e+308,
-			"NEGATIVE_MIN_VALUE": -5e-324
+			"NEGATIVE_MIN_VALUE": -5e-324,
+            "INFINITY": Infinity,
+            "NEG_INFINITY": -Infinity,
+            "NAN": NaN
 		},
 		"boolean": {
 			"TRUE": true,
@@ -101,7 +104,10 @@ module.exports = {
 			1.7976931348623157e+308,
 			5e-324,
 			-1.7976931348623157e+308,
-			-5e-324
+			-5e-324,
+            Infinity,
+            -Infinity,
+            NaN
 		],
 		"string": [
 			"a b c",
