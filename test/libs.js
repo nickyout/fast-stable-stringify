@@ -2,7 +2,6 @@ var assert = require("assert");
 var indexStringify = require('../index');
 var jsonStableStringify = require('json-stable-stringify');
 var fasterStableStringify = require('faster-stable-stringify');
-var fastStableStringify = require('fast-stable-stringify');
 
 var validateLibOutput = require('./validate');
 
@@ -41,12 +40,6 @@ suite("libs", function() {
 
 	benchmark('faster-stable-stringify', function () {
 		var result = fasterStableStringify(data);
-		assert.equal(result.length, dataLength);
-	}, {
-		minSamples: minSamples
-	});
-	benchmark('fast-stable-stringify', function () {
-		var result = fastStableStringify(data);
 		assert.equal(result.length, dataLength);
 	}, {
 		minSamples: minSamples

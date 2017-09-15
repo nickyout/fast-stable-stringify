@@ -1,35 +1,35 @@
 {
-    "fast-stable-stringify@48915d2": {
-        "name": "fast-stable-stringify@48915d2",
+    "JSON.stringify@native": {
+        "name": "JSON.stringify@native",
         "browser": "IE 9.0.0 (Windows 7 0.0.0)",
         "suite": "libs",
-        "hz": 5646.947691581062,
+        "hz": 9927.615273483276,
+        "success": true,
+        "fastest": false,
+        "rme": 0.012686011907513476,
+        "rhz": 1.8583624088037056,
+        "sampleSize": 164
+    },
+    "fast-stable-stringify@a9f81e8": {
+        "name": "fast-stable-stringify@a9f81e8",
+        "browser": "IE 9.0.0 (Windows 7 0.0.0)",
+        "suite": "libs",
+        "hz": 5342.1309139986515,
         "success": true,
         "fastest": true,
-        "rme": 0.009529681614178139,
+        "rme": 0.013540097031428645,
         "rhz": 1,
-        "sampleSize": 147
+        "sampleSize": 146
     },
     "json-stable-stringify@1.0.1": {
         "name": "json-stable-stringify@1.0.1",
         "browser": "IE 9.0.0 (Windows 7 0.0.0)",
         "suite": "libs",
-        "hz": 3235.3591160220994,
+        "hz": 3139.8341435516154,
         "success": true,
         "fastest": false,
-        "rme": 0.015626527452853475,
-        "rhz": 0.5729394520239033,
+        "rme": 0.015201173421442258,
+        "rhz": 0.5877493820535017,
         "sampleSize": 135
-    },
-    "JSON.stringify@native": {
-        "name": "JSON.stringify@native",
-        "browser": "IE 9.0.0 (Windows 7 0.0.0)",
-        "suite": "libs",
-        "hz": 8914.275747312182,
-        "success": true,
-        "fastest": false,
-        "rme": 0.021716875944469444,
-        "rhz": 1.5786007298424818,
-        "sampleSize": 163
     }
 }
