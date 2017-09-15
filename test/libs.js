@@ -21,29 +21,39 @@ suite("libs", function() {
 	benchmark('index', function () {
 		var result = indexStringify(data);
 		assert.equal(result.length, dataLength);
-	}, { minSamples: minSamples });
-
-	/*
-	benchmark('native', function () {
-		var result = JSON.stringify(data);
-		assert.equal(result.length, dataLength);
-	}, { minSamples: minSamples });
+	}, {
+		minSamples: minSamples,
+		setup: function() {
+			validateLibOutput(indexStringify);
+		}
+	});
 
 	benchmark('json-stable-stringify', function () {
 		var result = jsonStableStringify(data);
 		assert.equal(result.length, dataLength);
-	}, { minSamples: minSamples });
+	}, {
+		minSamples: minSamples
+	});
+
+	benchmark('native', function () {
+		var result = JSON.stringify(data);
+		assert.equal(result.length, dataLength);
+	}, {
+		minSamples: minSamples
+	});
 
 	benchmark('faster-stable-stringify', function () {
 		var result = fasterStableStringify(data);
 		assert.equal(result.length, dataLength);
-	}, { minSamples: minSamples });
-	*/
-
+	}, {
+		minSamples: minSamples
+	});
 	benchmark('fast-stable-stringify', function () {
 		var result = fastStableStringify(data);
 		assert.equal(result.length, dataLength);
-	}, { minSamples: minSamples });
+	}, {
+		minSamples: minSamples
+	});
 }, {
 	onComplete: function() {
 		var namesFastest = this

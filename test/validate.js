@@ -1,3 +1,4 @@
+var assert = require('assert');
 var eachRecursive = require('../util/eachRecursive');
 var jsonStableStringify = require('json-stable-stringify');
 var input = require('../fixtures').input;
@@ -11,8 +12,13 @@ module.exports = function validateLibOutput(stringify) {
 	eachRecursive(input, function (val, path) {
 		var mine = stringify(val);
 		var expectedVal = jsonStableStringify(val);
+		if (mine !== expectedVal) {
+			console.log('expected', expectedVal);
+			console.log('actual', mine);
+			global.value = val;
+		}
 		assert.equal(mine, expectedVal);
 		numComparisons++;
 	});
-	assert.equal(numComparisons, 606);
+	assert.equal(numComparisons, 563);
 };

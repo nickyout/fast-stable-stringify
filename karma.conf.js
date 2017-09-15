@@ -74,6 +74,7 @@ module.exports = function(config) {
     
     benchmarkReporter: {
 			destDir: 'results',
+			exclude: ['native', 'faster-stable-stringify', 'fast-stable-stringify'],
 			resolveName: function(benchName, suiteName) {
                 if (suiteName == 'libs') {
                     var libInfo = require('./util/get-lib-info')(benchName);

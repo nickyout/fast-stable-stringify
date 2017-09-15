@@ -1,86 +1,73 @@
-var toString = {}.toString;
-var isArray = Array.isArray || function(obj){
-		return toString.call(obj) === "[object Array]";
-	};
+var objToString = Object.prototype.toString;
 var objKeys = Object.keys || function(obj) {
 		var keys = [];
 		for (var name in obj) {
-			if (obj[name] !== undefined) {
-				keys.push(name);
-			}
+			keys.push(name);
 		}
 		return keys;
 	};
 
-function strEscape(str){
-	var length = str.length,
-		buffer = '',
-		code = 0,
-		i = 0;
-
-	for (; i < length; i++) {
-		code = str.charCodeAt(i);
-
-		if (code === 34) buffer += '\\"';
-		else if (code === 92) buffer += '\\\\';
-		else if (code > 31) buffer += String.fromCharCode(code);
-		else if (code > 15) buffer += "\\u00" + code.toString(16);
-		else if (code === 12) buffer += "\\f";
-		else if (code === 10) buffer += "\\n";
-		else if (code === 13) buffer += "\\r";
-		else if (code === 9) buffer += "\\t";
-		else if (code === 8) buffer += "\\b";
-		else buffer += "\\u000" + code.toString(16);
+function stringify(val, isArrayProp) {
+	var i, max, str, keys, key, propVal, toStr;
+	if (val === true) {
+		return "true";
 	}
-
-	return buffer;
-}
-
-function stringifyReg(val) {
-	var i, max, str, keys, key;
+	if (val === false) {
+		return "false";
+	}
 	switch (typeof val) {
 		case "object":
 			if (val === null) {
 				return null;
-			} else if (isArray(val)) {
-				str = '[';
-				max = val.length - 1;
-				for (i = 0; i < max; i++) {
-					str += stringifyReg(val[i]) + ',';
-				}
-				if (max > -1) {
-					str += stringifyReg(val[i]);
-				}
-				return str + ']';
+			} else if (val.toJSON && typeof val.toJSON === "function") {
+				return JSON.stringify(val);
 			} else {
-				// only object is left
-				keys = objKeys(val).sort();
-				max = keys.length;
-				str = "";
-				i = 0;
-				while (i < max) {
-					key = keys[i];
-					if (val[key] !== undefined) {
-						if (str) {
-							str += ',';
-						}
-						str += '"' + strEscape(key) + '":' + stringifyReg(val[key]);
+				toStr = objToString.call(val);
+				if (toStr === "[object Array]") {
+					str = '[';
+					max = val.length - 1;
+					for(i = 0; i < max; i++) {
+						str += stringify(val[i], true) + ',';
 					}
-					i++;
+					if (max > -1) {
+						str += stringify(val[i], true);
+					}
+					return str + ']';
+				} else if (toStr === "[object Object]") {
+					// only object is left
+					keys = objKeys(val).sort();
+					max = keys.length;
+					str = "";
+					i = 0;
+					while (i < max) {
+						key = keys[i];
+						propVal = stringify(val[key], false);
+						if (propVal !== undefined) {
+							if (str) {
+								str += ',';
+							}
+							str += JSON.stringify(key) + ':' + propVal;
+						}
+						i++;
+					}
+					return '{' + str + '}';
+				} else {
+					return JSON.stringify(val);
 				}
-				return '{' + str + '}';
 			}
+		case "function":
 		case "undefined":
-			return null;
+			return isArrayProp ? null : undefined;
 		case "string":
-			return '"' + strEscape(val) + '"';
+			return JSON.stringify(val);
 		default:
 			return val;
 	}
 }
 
 module.exports = function(val) {
-	if (val !== undefined) {
-		return ''+ stringifyReg(val);
+	var returnVal = stringify(val, false);
+	if (returnVal !== undefined) {
+		return ''+ returnVal;
 	}
 };
