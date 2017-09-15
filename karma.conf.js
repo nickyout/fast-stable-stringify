@@ -3,23 +3,25 @@
 
 module.exports = function(config) {
 
+  // in seconds
+  var TIMEOUT = 360;
+
   var customLaunchers = {
 		// desktop evergreen
-		sl_chrome: {	base: 'SauceLabs',	browserName: 'chrome',	version: '60' },
-		sl_firefox: {	base: 'SauceLabs',	browserName: 'firefox',	version: '54' },
-		sl_safari: {	base: "SauceLabs",	browserName: "safari",	version: '9',	idleTimeout: 180	},
-		sl_edge: {		base: "SauceLabs", 	browsername: "microsoftedge", version: '13' },
-		sl_opera: {		base: "SauceLabs", 	browsername: "opera", version: '12' },
+		sl_chrome: {	base: 'SauceLabs',	browserName: 'chrome',	version: '60',	idleTimeout: TIMEOUT },
+		sl_firefox: {	base: 'SauceLabs',	browserName: 'firefox',	version: '54',	idleTimeout: TIMEOUT },
+		sl_safari: {	base: "SauceLabs",	browserName: "safari",	version: '10',	platform: 'macOS 10.12', idleTimeout: TIMEOUT	},
+		sl_edge: {		base: "SauceLabs", 	browserName: "microsoftedge", version: '14', platform: 'Windows 10',	idleTimeout: TIMEOUT },
+		//sl_opera: {		base: "SauceLabs", 	browsername: "opera", version: '12',	platform: 'Windows 7', idleTimeout: TIMEOUT },
 
 		// desktop legacy
-		sl_ie_9: {		base: 'SauceLabs',	browserName: 'internet explorer',	version: '9'	},
-		sl_ie_10: {		base: 'SauceLabs',	browserName: 'internet explorer',	version: '10'	},
-		sl_ie_11: {		base: 'SauceLabs',	browserName: 'internet explorer',	version: '11'	},
+		sl_ie_9: {		base: 'SauceLabs',	browserName: 'internet explorer',	version: '9',	idleTimeout: TIMEOUT	},
+		sl_ie_10: {		base: 'SauceLabs',	browserName: 'internet explorer',	version: '10',	idleTimeout: TIMEOUT	},
+		sl_ie_11: {		base: 'SauceLabs',	browserName: 'internet explorer',	version: '11',	idleTimeout: TIMEOUT	},
 
 		// mobile
-		sl_iphone: {	base: 'SauceLabs',	browserName: 'iphone',	version: '9.2'	},
-		sl_ipad: {		base: 'SauceLabs',	browserName: 'ipad',		version: '9.2'	},
-		sl_android: {	base: 'SauceLabs',	browserName: 'android',	version: '5.1'	},
+		sl_iphone: {	base: 'SauceLabs',	browserName: 'iphone',	version: '10.3', idleTimeout: TIMEOUT	},
+		sl_android: {	base: 'SauceLabs',	browserName: 'android',	version: '6.0',	idleTimeout: TIMEOUT	},
   };
 
   config.set({
@@ -72,10 +74,9 @@ module.exports = function(config) {
     
     benchmarkReporter: {
 			destDir: 'results',
-			exclude: ['native'],
 			resolveName: function(benchName, suiteName) {
                 if (suiteName == 'libs') {
-                    var libInfo = require('./util/get-lib-info')(libName);
+                    var libInfo = require('./util/get-lib-info')(benchName);
                     return libInfo.name + '@' + libInfo.version;
                 } else {
                     return benchName;
@@ -103,11 +104,13 @@ module.exports = function(config) {
 
     // start these browsers
     // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-    //customLaunchers: customLaunchers,
-    //browsers: Object.keys(customLaunchers),
-		browsers: ['Chrome', 'Firefox'],
+    customLaunchers: customLaunchers,
+    browsers: Object.keys(customLaunchers),
+    //browsers: ['Chrome', 'Firefox'],
 
-		browserNoActivityTimeout: 72000,
+    browserNoActivityTimeout: TIMEOUT * 1000,
+    
+    captureTimeout: TIMEOUT * 1000,
 
     // Continuous Integration mode
     // if true, Karma captures browsers, runs the tests and exits
@@ -115,6 +118,6 @@ module.exports = function(config) {
 
     // Concurrency level
     // how many browser should be started simultaneous
-    concurrency: Infinity
+    concurrency: 5
   })
 };
