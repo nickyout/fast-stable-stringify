@@ -19,6 +19,21 @@ function mergeToMap(arrFileObj) {
 }
 
 /**
+ * Since every machine has its own speed, absolute test results have no absolute value.
+ * However, (I suspect that) the one that is the fastest will relatively be faster than the others.
+ * @typedef {Object} DataSetComparisonResultItem
+ * @prop {string} 	name
+ * @prop {string} 	browser
+ * @prop {string} 	suite
+ * @prop {boolean} 	success
+ * @prop {number} 	hz
+ * @prop {boolean} 	fastest - is fastest or, statistic significantly speaking, no slower than the fastest
+ * @prop {number} 	rme - relative margin of error (expressed as decimal, NOT %)
+ * @prop {number} 	rhz - relative hz compared to the fastest (expressed as decimal, NOT %)
+ * @prop {number} 	sampleSize
+ */
+/**
+ * Describes all results of a single test suite within single browser
  * @typedef {Object} DataSetComparisonResult
  * @prop {string} browser
  * @prop {string} suite

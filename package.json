@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "./node_modules/.bin/karma start",
-    "travis": "./node_modules/.bin/karma start ./karma.conf.travis.js"
+    "travis": "./node_modules/.bin/karma start ./karma.conf.travis.js",
+    "table": "node ./cli/index.js results/libs/*.json"
   },
   "repository": {
     "type": "git",

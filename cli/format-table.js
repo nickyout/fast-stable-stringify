@@ -23,11 +23,13 @@ function createTable(results, options) {
 	var errorCell = 'X';
 	var emptyCell = '?';
 	var hideColumns = options.hideColumns || [];
+	var compareTo = options.compareTo;
 	results.forEach(function(comparisonResult) {
 		var resultMap = comparisonResult.resultMap;
 		var libName;
 		var libResults;
 		var result;
+		var compareRHZ = resultMap[compareTo] && resultMap[compareTo].rhz || 1;
 		for (libName in resultMap) {
 			// dictates order
 			if (libNames.indexOf(libName) === -1 && hideColumns.indexOf(libName) === -1) {
@@ -44,8 +46,8 @@ function createTable(results, options) {
 			if (result) {
 				if (result.success) {
 					return (result.fastest ? '*' : '')
-						+ (100 * result.rhz).toFixed(2) + '% '
-						+ '(\xb1' + toFixedWidth(100 * result.rhz * result.rme, 4) + '%)';
+						+ (100 * result.rhz / compareRHZ).toFixed(2) + '% '
+						+ '(\xb1' + toFixedWidth(100 * (result.rhz  / compareRHZ) * result.rme, 4) + '%)';
 				} else {
 					return errorCell;
 				}
