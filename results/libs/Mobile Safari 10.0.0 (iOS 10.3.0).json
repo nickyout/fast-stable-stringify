@@ -1,0 +1,46 @@
+{
+    "fast-stable-stringify@48915d2": {
+        "name": "fast-stable-stringify@48915d2",
+        "browser": "Mobile Safari 10.0.0 (iOS 10.3.0)",
+        "suite": "libs",
+        "hz": 5013.698630136986,
+        "success": true,
+        "fastest": true,
+        "rme": 0.03510914381210993,
+        "rhz": 1,
+        "sampleSize": 147
+    },
+    "json-stable-stringify@1.0.1": {
+        "name": "json-stable-stringify@1.0.1",
+        "browser": "Mobile Safari 10.0.0 (iOS 10.3.0)",
+        "suite": "libs",
+        "hz": 3194.4000049583924,
+        "success": true,
+        "fastest": false,
+        "rme": 0.03311181527244058,
+        "rhz": 0.6371344272184772,
+        "sampleSize": 162
+    },
+    "JSON.stringify@native": {
+        "name": "JSON.stringify@native",
+        "browser": "Mobile Safari 10.0.0 (iOS 10.3.0)",
+        "suite": "libs",
+        "hz": 21305.095562765506,
+        "success": true,
+        "fastest": false,
+        "rme": 0.04029417188892885,
+        "rhz": 4.249376983830278,
+        "sampleSize": 165
+    },
+    "faster-stable-stringify@1.0.0": {
+        "name": "faster-stable-stringify@1.0.0",
+        "browser": "Mobile Safari 10.0.0 (iOS 10.3.0)",
+        "suite": "libs",
+        "hz": 3546.8649631389944,
+        "success": true,
+        "fastest": false,
+        "rme": 0.03397858290448208,
+        "rhz": 0.7074348150523131,
+        "sampleSize": 158
+    }
+}

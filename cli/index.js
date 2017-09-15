@@ -9,7 +9,7 @@ var fileList = glob.sync(pattern, { nodir: true });
 //console.log(fileList);
 filesToComparisonResults(fileList)
 	.then(function(comparisonResult) {
-		return formatTable(comparisonResult, { hideColumns: ['JSON.stringify@native'] })
+		return formatTable(comparisonResult, { hideColumns: [] })
 	})
 	.then(function(str) {
 		console.log(str);

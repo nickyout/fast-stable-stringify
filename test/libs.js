@@ -22,10 +22,7 @@ suite("libs", function() {
 		var result = indexStringify(data);
 		assert.equal(result.length, dataLength);
 	}, {
-		minSamples: minSamples,
-		setup: function() {
-			validateLibOutput(indexStringify);
-		}
+		minSamples: minSamples
 	});
 
 	benchmark('json-stable-stringify', function () {

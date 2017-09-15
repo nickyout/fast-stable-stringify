@@ -1,0 +1,46 @@
+{
+    "fast-stable-stringify@48915d2": {
+        "name": "fast-stable-stringify@48915d2",
+        "browser": "Chrome Mobile 55.0.2883 (Android 6.0.0)",
+        "suite": "libs",
+        "hz": 7285.742427162206,
+        "success": true,
+        "fastest": true,
+        "rme": 0.03933855811179956,
+        "rhz": 1,
+        "sampleSize": 141
+    },
+    "json-stable-stringify@1.0.1": {
+        "name": "json-stable-stringify@1.0.1",
+        "browser": "Chrome Mobile 55.0.2883 (Android 6.0.0)",
+        "suite": "libs",
+        "hz": 5130.96345039697,
+        "success": true,
+        "fastest": false,
+        "rme": 0.02276664232950782,
+        "rhz": 0.7042471651575362,
+        "sampleSize": 147
+    },
+    "JSON.stringify@native": {
+        "name": "JSON.stringify@native",
+        "browser": "Chrome Mobile 55.0.2883 (Android 6.0.0)",
+        "suite": "libs",
+        "hz": 25795.27604202384,
+        "success": true,
+        "fastest": false,
+        "rme": 0.025999041639566074,
+        "rhz": 3.5405144087794898,
+        "sampleSize": 149
+    },
+    "faster-stable-stringify@1.0.0": {
+        "name": "faster-stable-stringify@1.0.0",
+        "browser": "Chrome Mobile 55.0.2883 (Android 6.0.0)",
+        "suite": "libs",
+        "hz": 7243.286573669134,
+        "success": true,
+        "fastest": true,
+        "rme": 0.043211080625878855,
+        "rhz": 0.994172748499207,
+        "sampleSize": 147
+    }
+}

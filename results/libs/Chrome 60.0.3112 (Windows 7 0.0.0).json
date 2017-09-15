@@ -1,0 +1,46 @@
+{
+    "fast-stable-stringify@48915d2": {
+        "name": "fast-stable-stringify@48915d2",
+        "browser": "Chrome 60.0.3112 (Windows 7 0.0.0)",
+        "suite": "libs",
+        "hz": 8653.161999887776,
+        "success": true,
+        "fastest": true,
+        "rme": 0.011408653199547118,
+        "rhz": 1,
+        "sampleSize": 158
+    },
+    "json-stable-stringify@1.0.1": {
+        "name": "json-stable-stringify@1.0.1",
+        "browser": "Chrome 60.0.3112 (Windows 7 0.0.0)",
+        "suite": "libs",
+        "hz": 5966.213704514476,
+        "success": true,
+        "fastest": false,
+        "rme": 0.011235544123178573,
+        "rhz": 0.689483648242325,
+        "sampleSize": 148
+    },
+    "JSON.stringify@native": {
+        "name": "JSON.stringify@native",
+        "browser": "Chrome 60.0.3112 (Windows 7 0.0.0)",
+        "suite": "libs",
+        "hz": 23997.52941943746,
+        "success": true,
+        "fastest": false,
+        "rme": 0.01342696957973951,
+        "rhz": 2.773267092393357,
+        "sampleSize": 171
+    },
+    "faster-stable-stringify@1.0.0": {
+        "name": "faster-stable-stringify@1.0.0",
+        "browser": "Chrome 60.0.3112 (Windows 7 0.0.0)",
+        "suite": "libs",
+        "hz": 6626.107244268721,
+        "success": true,
+        "fastest": false,
+        "rme": 0.013262341935207322,
+        "rhz": 0.7657440418143859,
+        "sampleSize": 171
+    }
+}
