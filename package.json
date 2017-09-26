@@ -9,7 +9,8 @@
   "scripts": {
     "test": "./node_modules/.bin/karma start",
     "travis": "./node_modules/.bin/karma start ./karma.conf.travis.js",
-    "table": "node ./cli/index.js results/libs/*.json"
+    "table": "node ./cli/index.js results/libs/*.json",
+    "prepublish": "json -f package.json -I -e 'delete this.devDependencies'"
   },
   "repository": {
     "type": "git",
@@ -32,6 +33,7 @@
     "faster-stable-stringify": "^1.0.0",
     "fs-extra": "^4.0.1",
     "glob": "^7.1.2",
+    "json": "^9.0.6",
     "json-stable-stringify": "^1.0.0",
     "karma": "^1.7.1",
     "karma-benchmark": "^0.7.1",
