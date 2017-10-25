@@ -8,7 +8,7 @@ _The test only succeeds when mine is faster than substack's in a particular brow
 
 The most popular repository providing this feature is [substack's json-stable-stringify][sub]. The intent if this library is to provide a faster alternative for when performance is more important than features. It assumes you provide basic javascript values without circular references, and returns a non-indented string.
 
-It currently offers a performance boost in popular browsers of about 40%. See the comparsion table below.
+It currently offers a performance boost in popular browsers of about 40%. See the comparison table below.
 
 Usage:
 
